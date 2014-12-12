@@ -38,7 +38,7 @@ private void doReport()
     String sourceDir = opt.getProperty("s")
     def config = new CoverageReportConfig(
             directory: "${sourceDir}",
-            excludeSymbols: ["main.m"]
+            excludeSymbols: ["main.m", "queue.h"]
     )
     String outPutDir = opt.getProperty("o")
     Double requiredCoverage = new Double(opt.getProperty("r"))
@@ -92,7 +92,7 @@ class CoverageReportGenerator
             |#!/bin/sh
             |mkdir -p ${collationDir}
             |mkdir -p ${coverageData}
-            |find ~/Library/Developer/Xcode/DerivedData/ ${config.dataFileNames()} -exec cp '{}' ${collationDir} \\;
+            |find ~/Library/Developer/Xcode/DerivedData/ ${config.dataFileNames()} | rsync --files-from=- / ${collationDir}
             |find ${collationDir} -type file -exec cp -fr {} ${coverageData} \\;
             |rm -fr ${collationDir}
             |geninfo ${coverageData}/*.gcno --no-recursion --output-filename ${coverageInfoFile}.temp
