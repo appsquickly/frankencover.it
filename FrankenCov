@@ -10,6 +10,7 @@ import static org.fusesource.jansi.Ansi.Color.BLACK
 import static org.fusesource.jansi.Ansi.ansi
 
 
+	
 doReport()
 
 private void doReport()
@@ -21,7 +22,7 @@ private void doReport()
                 s(longOpt: 'source-dir', 'The source directory to generate coverage for', args: 1, type: String, required: true)
                 o(longOpt: 'output-dir', 'The output directory to write coverage report', args: 1, type: String, required: true)
                 r(longOpt: 'required-coverage', 'Required line coverage', args: 1, type: String, required: true)
-                e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: 1, type: String, required: false)
+                //e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: 1, type: String, required: false)
             }
     def opt = cli.parse(args)
     if (!opt)
@@ -37,7 +38,7 @@ private void doReport()
     String sourceDir = opt.getProperty("s")
     def config = new CoverageReportConfig(
             directory: "${sourceDir}",
-            excludeSymbols: []
+            excludeSymbols: ["main.m"]
     )
     String outPutDir = opt.getProperty("o")
     Double requiredCoverage = new Double(opt.getProperty("r"))
@@ -91,13 +92,15 @@ class CoverageReportGenerator
             |#!/bin/sh
             |mkdir -p ${collationDir}
             |mkdir -p ${coverageData}
-            |find . ${config.dataFileNames()} | rsync --files-from=- ./ ${collationDir}
+            |find ~/Library/Developer/Xcode/DerivedData/ ${config.dataFileNames()} -exec cp '{}' ${collationDir} \\;
             |find ${collationDir} -type file -exec cp -fr {} ${coverageData} \\;
             |rm -fr ${collationDir}
             |geninfo ${coverageData}/*.gcno --no-recursion --output-filename ${coverageInfoFile}.temp
             |lcov -r ${coverageInfoFile}.temp ${excludeSymbols} > ${coverageInfoFile}
             |${genHtmlCmd} -o ${reportLocation.absolutePath} --prefix ${config.prefix()} ${coverageInfoFile}
             """.stripMargin()
+
+		//println (script)
 
         Process process = "bash".execute();
         process.outputStream.write(script.getBytes())
@@ -211,7 +214,8 @@ class CoverageReportConfig
 
     String prefix()
     {
-        return new File("./${directory}").absolutePath
+		def baseDir = new File(".").getAbsolutePath()		
+        return baseDir.substring(0, baseDir.length() - 1) + "${directory}"
     }
 
     String dataFileNames()
@@ -241,7 +245,9 @@ class CoverageReportConfig
                 }
             }
         }
-        fileNames;
+		
+		//println ("Filenames: " + fileNames)
+        fileNames
     }
 
 
