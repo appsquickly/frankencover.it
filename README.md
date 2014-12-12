@@ -1,4 +1,4 @@
-# FrankenCoverage
+# FrankenCov
 
 Producing a test coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here we've glued them all together into something that (hopefully) just works. 
 
@@ -30,7 +30,7 @@ sudo port install lcov
 Here we're installing into the current directory, it could also be placed in a shared location. 
 
 ```sh
-wget https://raw.github.com/jasperblues/FrankenCoverage/master/FrankenCoverage && chmod +x FrankenCoverage 
+wget https://raw.github.com/jasperblues/FrankenCov/master/FrankenCov && chmod +x FrankenCov
 ```
 
 #Usage
