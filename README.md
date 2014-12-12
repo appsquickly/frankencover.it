@@ -27,7 +27,7 @@ sudo port install lcov
 
 ### Now install the script
 
-Here we're installing into the current directory, it could also be placed in a shared location. 
+With the following command, we're installing into the current directory. It could also be placed in a shared location. 
 
 ```sh
 wget https://raw.github.com/jasperblues/FrankenCov/master/FrankenCov && chmod +x FrankenCov
