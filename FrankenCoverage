@@ -1,0 +1,240 @@
+#!/usr/bin/env groovy
+import groovy.io.FileType
+import org.apache.tools.ant.util.FileUtils
+
+import static org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD
+import static org.fusesource.jansi.Ansi.Color.RED
+import static org.fusesource.jansi.Ansi.Color.GREEN
+import static org.fusesource.jansi.Ansi.Color.YELLOW
+import static org.fusesource.jansi.Ansi.ansi
+
+
+doReport()
+
+private void doReport()
+{
+    def cli = new CliBuilder()
+    cli.with
+            {
+                h(longOpt: 'help', 'Help - Usage Information')
+                s(longOpt: 'source-dir', 'The source directory to generate coverage for', args: 1, type: String, required: true)
+                o(longOpt: 'output-dir', 'The output directory to write coverage report', args: 1, type: String, required: true)
+                r(longOpt: 'required-coverage', 'Required line coverage', args: 1, type: String, required: true)
+                e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: 1, type: String, required: false)
+            }
+    def opt = cli.parse(args)
+    if (!opt)
+    {
+        System.exit(-1)
+    }
+    if (opt.h)
+    {
+        cli.usage()
+    }
+
+
+    String sourceDir = opt.getProperty("s")
+    def config = new CoverageReportConfig(
+            directory: "${sourceDir}",
+            excludeSymbols: []
+    )
+    String outPutDir = opt.getProperty("o")
+    Double requiredCoverage = new Double(opt.getProperty("r"))
+
+    new CoverageReportGenerator(outPutDir, config, requiredCoverage, new AntBuilder())
+}
+
+
+class CoverageReportGenerator
+{
+    String outputDir
+    CoverageReportConfig config
+    Double requiredCoverage
+    AntBuilder ant
+
+    private File reportLocation
+
+    // ================================================================ //
+    // Constructors
+
+    CoverageReportGenerator(String outputDir, CoverageReportConfig config, Double requiredCoverage, AntBuilder ant)
+    {
+        this.config = config
+        this.outputDir = outputDir
+        this.requiredCoverage = requiredCoverage
+        this.ant = ant
+        this.reportLocation = new File("${outputDir}/coverage")
+
+        start();
+    }
+
+    // ================================================================ //
+    // Public
+
+    // ================================================================ //
+    // Private
+
+    private void start()
+    {
+        def collationDir = "${outputDir}/temp/coverage-data-collate"
+        def coverageData = "${outputDir}/temp/coverage-data"
+        def coverageInfoFile = "${outputDir}/temp/coverage.info"
+        def genHtmlCmd = "genhtml --no-function-coverage --no-branch-coverage"
+        def excludeSymbols = config.excludeSymbols.join(" ")
+
+        def script = """\
+            |#!/bin/sh
+            |mkdir -p ${collationDir}
+            |mkdir -p ${coverageData}
+            |find . ${config.dataFileNames()} | rsync --files-from=- ./ ${collationDir}
+            |find ${collationDir} -type file -exec cp -fr {} ${coverageData} \\;
+            |rm -fr ${collationDir}
+            |geninfo ${coverageData}/*.gcno --no-recursion --output-filename ${coverageInfoFile}.temp
+            |lcov -r ${coverageInfoFile}.temp ${excludeSymbols} > ${coverageInfoFile}
+            |${genHtmlCmd} -o ${reportLocation.absolutePath} --prefix ${config.prefix()} ${coverageInfoFile}
+            """.stripMargin()
+
+        Process process = "bash".execute();
+        process.outputStream.write(script.getBytes())
+        process.outputStream.close()
+
+        process.waitFor()
+
+        printSummary(coverageInfoFile)
+
+    }
+
+    private void printSummary(coverageInfoFile)
+    {
+        OutputStream os = new ByteArrayOutputStream()
+        Process summary = "lcov --summary ${coverageInfoFile}".execute()
+        summary.consumeProcessOutput(os, os)
+        summary.waitFor()
+
+        def parser = new CoverageReportParser(os.toString())
+        parser.print()
+
+        if (parser.lineCoveragePercent < requiredCoverage)
+        {
+            print ansi().a(INTENSITY_BOLD).fg(RED).a("  <----- Required coverage is ${requiredCoverage}%\n\n").reset()
+            System.exit(-1)
+        }
+        print ansi().a("\n\n").reset()
+    }
+
+}
+
+
+class CoverageReportParser
+{
+
+    Double lineCoveragePercent;
+    String lineCoverageDetail;
+
+    // ================================================================ //
+    // Constructors
+
+    CoverageReportParser(String summary)
+    {
+        parse(summary);
+    }
+
+    // ================================================================ //
+    // Public
+
+
+    void print()
+    {
+
+        print ansi().a(INTENSITY_BOLD).a("\nTest Coverage:\n").reset()
+        print ansi().a("  lines......: ")
+        print ansi().a(INTENSITY_BOLD)
+        if (lineCoveragePercent < 60)
+        {
+            print ansi().fg(RED)
+        }
+        else if (lineCoveragePercent < 79)
+        {
+            print ansi().fg(YELLOW)
+        }
+        else
+        {
+            print ansi().fg(GREEN)
+        }
+
+        print ansi().a("${lineCoveragePercent}% ").reset()
+        print ansi().a("${lineCoverageDetail}")
+    }
+
+    // ================================================================ //
+    // Private
+
+    void parse(String summary)
+    {
+        boolean linesFound = false
+        summary.eachLine {
+            if (it.startsWith("  lines......:"))
+            {
+                def lineSummary = it.split("%")
+                lineCoveragePercent = new Double(lineSummary[0].substring(15))
+                lineCoverageDetail = lineSummary[1].trim()
+                linesFound = true
+            }
+        }
+        if (!linesFound)
+        {
+            throw new RuntimeException("Coverage data not found")
+        }
+    }
+}
+
+class CoverageReportConfig
+{
+
+    String directory
+    List<String> excludeSymbols
+
+    //Private
+    private List<String> fileNames;
+
+    // ================================================================ //
+    // Public
+
+
+    String prefix()
+    {
+        return new File("./${directory}").absolutePath
+    }
+
+    String dataFileNames()
+    {
+        def dataFiles = new ArrayList<String>();
+        cachedFileNames().each { fileName ->
+            dataFiles.add("-name ${fileName}.gcno")
+            dataFiles.add("-name ${fileName}.gcda")
+        }
+        dataFiles.join(' -o ')
+    }
+
+    // ================================================================ //
+    // Private
+
+    private List<String> cachedFileNames()
+    {
+        if (!fileNames)
+        {
+            fileNames = new ArrayList<String>()
+
+            new File("./${directory}").eachFileRecurse(FileType.FILES) { file ->
+                def fileName = file.name;
+                if (fileName.endsWith(".h"))
+                {
+                    fileNames << fileName.substring(0, fileName.length() - 2)
+                }
+            }
+        }
+        fileNames;
+    }
+
+
+}
