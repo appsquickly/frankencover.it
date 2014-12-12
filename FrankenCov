@@ -6,6 +6,7 @@ import static org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD
 import static org.fusesource.jansi.Ansi.Color.RED
 import static org.fusesource.jansi.Ansi.Color.GREEN
 import static org.fusesource.jansi.Ansi.Color.YELLOW
+import static org.fusesource.jansi.Ansi.Color.BLACK
 import static org.fusesource.jansi.Ansi.ansi
 
 
@@ -64,6 +65,10 @@ class CoverageReportGenerator
         this.requiredCoverage = requiredCoverage
         this.ant = ant
         this.reportLocation = new File("${outputDir}/coverage")
+
+		print ansi().a(INTENSITY_BOLD)
+		print ansi().fg(YELLOW).a("\n▸  ")
+		print ansi().fg(BLACK).a("Test Coverage:\n").reset()
 
         start();
     }
@@ -144,24 +149,27 @@ class CoverageReportParser
 
 
     void print()
-    {
+    {        
 
-        print ansi().a(INTENSITY_BOLD).a("\nTest Coverage:\n").reset()
-        print ansi().a("  lines......: ")
         print ansi().a(INTENSITY_BOLD)
         if (lineCoveragePercent < 60)
         {
-            print ansi().fg(RED)
+            print ansi().fg(RED).a("     ✗").reset()
+	        print ansi().a(" lines......: ")
+			print ansi().fg(RED)
         }
         else if (lineCoveragePercent < 79)
         {
-            print ansi().fg(YELLOW)
+            print ansi().fg(YELLOW).a("     ⚠").reset()
+	        print ansi().a(" lines......: ")
         }
         else
         {
-            print ansi().fg(GREEN)
+            print ansi().fg(GREEN).a("     ✓ ").reset()
+	        print ansi().a(" lines......: ")
         }
 
+        print ansi().a(INTENSITY_BOLD)
         print ansi().a("${lineCoveragePercent}% ").reset()
         print ansi().a("${lineCoverageDetail}")
     }
