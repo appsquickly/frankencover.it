@@ -1,4 +1,4 @@
-# FrankenCoverage
+# FrankenCov
 
 Producing a test coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here we've glued them all together into something that (hopefully) just works. 
 
@@ -30,18 +30,18 @@ sudo port install lcov
 Here we're installing into the current directory, it could also be placed in a shared location. 
 
 ```sh
-wget https://raw.github.com/jasperblues/FrankenCoverage/master/FrankenCoverage && chmod +x FrankenCoverage 
+wget https://raw.github.com/jasperblues/FrankenCov/master/FrankenCov && chmod +x FrankenCov
 ```
 
 #Usage
 
 #### Set your main App target to produce test coverage output (debug mode only). 
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCoverage/master/sample_output/Coverage.png)
+![Enable Coverage](https://raw.github.com/jasperblues/FrankenCov/master/sample_output/Coverage.png)
 
 #### Set your main App target to instrument program flow (debug mode only). 
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCoverage/master/sample_output/Instrument.png)
+![Enable Coverage](https://raw.github.com/jasperblues/FrankenCov/master/sample_output/Instrument.png)
 
 #### Create a build script
 
@@ -53,20 +53,20 @@ xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configura
 #gem install xcpretty
 
 # Now Produce Test Coverage Report
-./FrankenCoverage -source-dir MyProject/Classes -output-dir build/reports -required-coverage 85 
+./FrankenCov -source-dir MyProject/Classes -output-dir build/reports -required-coverage 85 
 ```
 
 # Output
 
 #### cmd-line
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCoverage/master/sample_output/output.png)
+![Enable Coverage](https://raw.github.com/jasperblues/FrankenCov/master/sample_output/output.png)
 
 #### browser
 
 Report file is at `build/reports/coverage/index.html`.
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCoverage/master/sample_output/report.png)
+![Enable Coverage](https://raw.github.com/jasperblues/FrankenCov/master/sample_output/report.png)
 
 
 # LICENSE
