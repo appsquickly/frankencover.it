@@ -49,8 +49,8 @@ wget https://raw.github.com/jasperblues/FrankenCov/master/FrankenCov && chmod +x
 # First Run Tests
 xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configuration Debug \
 -destination 'platform=iOS Simulator,name=iPhone 5s,OS=8.1' | xcpretty -c --report junit
-#Above we are piping the build output through xcpretty, which is not required, but nice. 
-#gem install xcpretty
+#Above we are piping the build output through xcpretty, which is not required, but very nice. 
+#(gem install xcpretty)
 
 # Now Produce Test Coverage Report
 ./FrankenCov -source-dir MyProject/Classes -output-dir build/reports -required-coverage 85 
