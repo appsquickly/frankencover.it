@@ -43,7 +43,7 @@ xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configura
 #(gem install xcpretty)
 
 # Now Produce Test Coverage Report
-groovy http://appsquickly.github.io/FrankenCover/with -source-dir MyProject/Source -output-dir build/reports -required-coverage 0
+groovy http://appsquickly.github.io/FrankenCover/with -source-dir MyProject/Source -required-coverage 0
 ```
 
 . . this ensures using an update to date version. 
