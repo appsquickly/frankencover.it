@@ -38,7 +38,7 @@ Set your main App target to instrument program flow (debug mode only).
 Run tests in your IDE (AppCode or Xcode) and produce a report with: 
 
 ```sh
-groovy http://appsquickly.github.io/FrankenCover/with -source-dir MyProject/Source -required-coverage 0
+groovy http://appsquickly.github.io/FrankenCover/with -source-dir MyProject/Source
 ```
 
 ##### Build server or cmd-line use
@@ -53,7 +53,8 @@ xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configura
 #(gem install xcpretty)
 
 # Now Produce Test Coverage Report
-groovy http://appsquickly.github.io/FrankenCover/with -source-dir MyProject/Source -required-coverage 0
+groovy http://appsquickly.github.io/FrankenCover/with -source-dir MyProject/Source -required-coverage 85
+#Above we are setting the required coverage to 85%. The build will fail if coverage falls below this value. 
 ```
 
 . . this ensures using an update to date version. 
