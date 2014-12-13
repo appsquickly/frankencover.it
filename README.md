@@ -27,11 +27,11 @@ sudo port install lcov
 
 Set your main App target to produce test coverage output (debug mode only). 
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/Coverage.png)
+![Enable Coverage](http://appsquickly.github.io/FrankenCover/images/Coverage.png)
 
 Set your main App target to instrument program flow (debug mode only). 
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/Instrument.png)
+![Enable Coverage](http://appsquickly.github.io/FrankenCover/images/Instrument.png)
 
 #### Create a build script
 
@@ -43,7 +43,7 @@ xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configura
 #(gem install xcpretty)
 
 # Now Produce Test Coverage Report
-groovy https://raw.githubusercontent.com/appsquickly/FrankenCover/master/FrankenCover -s Kombie/Classes -o build/reports -r 0
+groovy http://appsquickly.github.io/FrankenCover/with -source-dir Kombie/Classes -output-dir build/reports -required-coverage 0
 ```
 
 . . this ensures using an update to date version. 
@@ -58,13 +58,13 @@ wget https://raw.github.com/jasperblues/FrankenCov/master/FrankenCover && chmod 
 
 #### cmd-line
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/output.png)
+![Enable Coverage](http://appsquickly.github.io/FrankenCover/images/sample_output/output.png)
 
 #### browser
 
 Report file is at `build/reports/coverage/index.html`.
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/report.png)
+![Enable Coverage](http://appsquickly.github.io/FrankenCover/images/report.png)
 
 
 # LICENSE
