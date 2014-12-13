@@ -7,12 +7,11 @@ Producing a test coverage report for iOS and OSX projects requires a mish-mash o
  
 #Installing
 
-First install dependencies. . .
+The script itself can be run remotely, but we'll first need to install dependencies .  .
 
 ### With HomeBrew
 
 ```sh
-brew install wget
 brew install groovy
 brew install lcov
 ```
@@ -20,7 +19,6 @@ brew install lcov
 ### With MacPorts
 
 ```sh
-sudo port install wget
 sudo port install groovy
 sudo port install lcov
 ```
@@ -28,10 +26,6 @@ sudo port install lcov
 ### Now install the script
 
 With the following command, we're installing into the current directory. It could also be placed in a shared location. 
-
-```sh
-wget https://raw.github.com/jasperblues/FrankenCov/master/FrankenCov && chmod +x FrankenCov
-```
 
 #Usage
 
@@ -53,7 +47,15 @@ xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configura
 #(gem install xcpretty)
 
 # Now Produce Test Coverage Report
-./FrankenCov -source-dir MyProject/Classes -output-dir build/reports -required-coverage 85 
+groovy https://raw.github.com/jasperblues/FrankenCov/master/FrankenCov -s Kombie/Classes -o build/reports -r 0
+```
+
+. . this ensures using an update to date version. 
+
+#### Alternatively, the script could be installed:
+
+```sh
+wget https://raw.github.com/jasperblues/FrankenCov/master/FrankenCov && chmod +x FrankenCov
 ```
 
 # Output
