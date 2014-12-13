@@ -56,7 +56,7 @@ class FrankenCover
 
     private void initCli()
     {
-        cli = new CliBuilder()
+        cli = new CliBuilder(usage: 'groovy http://frankencover.it/with')
         cli.with
                 {
                     h(longOpt: 'help', 'Help - Usage Information')
