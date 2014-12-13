@@ -54,7 +54,7 @@ xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configura
 
 # Now Produce Test Coverage Report
 groovy http://appsquickly.github.io/FrankenCover/with -source-dir MyProject/Source -required-coverage 85
-#Above we are setting the required coverage to 85%. The build will fail if coverage falls below this value. 
+#Above we set required coverage to 85%. Build fails if coverage falls below this value. 
 ```
 
 . . this ensures using an update to date version. 
