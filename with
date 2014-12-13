@@ -63,8 +63,8 @@ class FrankenCover
                     s(longOpt: 'source-dir', 'The source directory to generate coverage for', args: 1, type: String, required: true)
                     o(longOpt: 'output-dir', 'The output directory to write coverage report', args: 1, type: String, required: false)
                     r(longOpt: 'required-coverage', 'Required line coverage', args: 1, type: String, required: false)
-                    a(longOpt: 'appcode', 'Search in AppCode\'s output directory. (default is both Xcode and AppCode\'s output dirs', args: 0, type: boolean, required: false)
-                    x(longOpt: 'xcode', 'Search in Xcode\'s output directory. (default is both Xcode and AppCode\'s output dirs', args: 0, type: boolean, required: false)
+                    a(longOpt: 'appcode', 'Search in AppCode\'s output directory. (default is both Xcode and AppCode\'s output dirs)', args: 0, type: boolean, required: false)
+                    x(longOpt: 'xcode', 'Search in Xcode\'s output directory. (default is both Xcode and AppCode\'s output dirs)', args: 0, type: boolean, required: false)
                     //e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: 1, type: String, required: false)
                 }
     }
