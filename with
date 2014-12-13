@@ -305,7 +305,8 @@ class IDEConfig
             new File("${System.getProperty("user.home")}/Library/Caches").eachFile(FileType.DIRECTORIES) { directory ->
                 def dir = directory.name;
                 if (dir.startsWith("appCode")) {
-                    highestAppCodeInstalled = dir.replaceAll("[^\\d.]", "").toInteger()
+                    def appCodeVersion = dir.replaceAll("[^\\d.]", "").toInteger()
+                    highestAppCodeInstalled = appCodeVersion > highestAppCodeInstalled ? appCodeVersion : highestAppCodeInstalled
                 }
             }
             if (highestAppCodeInstalled) {
