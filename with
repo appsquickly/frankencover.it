@@ -39,18 +39,13 @@ class FrankenCover
         String outPutDir = opt.getProperty("o") ? opt.getProperty("o") : "build/reports"
         String sourceDir = opt.getProperty("s")
         def reportConfig = new ReportConfig(directory: "${sourceDir}", excludeSymbols: ["main.m", "queue.h"])
-        def ideConfig = new IDEConfig()
+        def ideConfig = new IDEConfig(withXcode: true, withAppCode: true)
         if (opt.getProperty("x") || opt.getProperty("a")) {
             ideConfig.withAppCode = opt.getProperty("a")
             ideConfig.withXcode = opt.getProperty("x")
         }
-        else {
-            ideConfig.withAppCode = true
-            ideConfig.withXcode = true
-        }
 
         Double requiredCoverage = opt.getProperty("r") ? new Double(opt.getProperty("r").replaceAll("%", "")) : 0
-
         new ReportGenerator(outPutDir, requiredCoverage, reportConfig, ideConfig, new AntBuilder())
     }
 
