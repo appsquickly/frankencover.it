@@ -51,7 +51,7 @@
             </li>
         </ul>
 
-        <div id="installing>" class="chapter">
+        <div id="installing>" class="padding-top">
             <h2>Installing</h2>
 
             <p>The script itself can be run remotely, but we'll first need to install dependencies . . .</p>
@@ -72,7 +72,7 @@ $ sudo port install lcov
 
         </div>
 
-        <div id="usage" class="chapter">
+        <div id="usage" class="padding-top">
             <h2>Usage</h2>
 
             <p>Set your main App target to produce test coverage output (debug mode only).</p>
@@ -83,12 +83,14 @@ $ sudo port install lcov
             <img src="images/Instrument.png"/>
             <br/><br/>
 
+            <h3 class="padding-top">IDE USE</h3>
             <p>Run your tests from Xcode or AppCode, and then produce a coverage report with:</p>
-<pre><code>groovy http://frankencover.it/with -source-dir MyProject/Classes -output-dir build/reports
-    -required-coverage 80
+<pre><code>groovy http://frankencover.it/with -source-dir MyProject/Classes
 </code></pre>
 
-            <p>Alternatively, create a build script, which could be run locally or form a build server. </p>
+            <h3 class="padding-top">Build server or cmd-line use</h3>
+
+            <p>Create a build script, which could be run locally or form a build server. </p>
         <pre><code>#!/bin/sh
 # First Run Tests
 xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configuration Debug \
@@ -97,8 +99,8 @@ xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configura
 #(gem install xcpretty)
 
 # Now Produce Test Coverage Report
-groovy http://frankencover.it/with -source-dir MyProject/Classes -output-dir build/reports
--required-coverage 80
+groovy http://frankencover.it/with -source-dir MyProject/Classes -required-coverage 80
+#Above we set required coverage to 85%. Build fails if coverage falls below this value.
         </code></pre>
 
             <p>. . . and run it with</p>
@@ -106,7 +108,7 @@ groovy http://frankencover.it/with -source-dir MyProject/Classes -output-dir bui
 
         </div>
 
-        <div id="output" class="chapter">
+        <div id="output" class="padding-top">
             <h2>Output</h2>
 
             <h3>Cmd-line</h3>
