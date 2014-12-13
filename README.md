@@ -33,7 +33,17 @@ Set your main App target to instrument program flow (debug mode only).
 
 ![Enable Instrumentation](http://appsquickly.github.io/FrankenCover/images/Instrument.png)
 
-#### Create a build script
+#### IDE Use
+
+Run tests in your IDE (AppCode or Xcode) and produce a report with: 
+
+```sh
+groovy http://appsquickly.github.io/FrankenCover/with -source-dir MyProject/Source -required-coverage 0
+```
+
+##### Build server or cmd-line use
+
+Create a build script as follows
 
 ```sh
 # First Run Tests
