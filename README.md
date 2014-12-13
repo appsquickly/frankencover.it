@@ -23,10 +23,6 @@ sudo port install groovy
 sudo port install lcov
 ```
 
-### Now install the script
-
-With the following command, we're installing into the current directory. It could also be placed in a shared location. 
-
 #Usage
 
 #### Set your main App target to produce test coverage output (debug mode only). 
