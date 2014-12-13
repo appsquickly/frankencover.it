@@ -1,4 +1,4 @@
-# FrankenCov
+# FrankenCover
 
 Producing a test coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here we've glued them all together into something that (hopefully) just works. 
 
@@ -31,11 +31,11 @@ With the following command, we're installing into the current directory. It coul
 
 #### Set your main App target to produce test coverage output (debug mode only). 
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCov/master/sample_output/Coverage.png)
+![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/Coverage.png)
 
 #### Set your main App target to instrument program flow (debug mode only). 
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCov/master/sample_output/Instrument.png)
+![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/Instrument.png)
 
 #### Create a build script
 
@@ -47,7 +47,7 @@ xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configura
 #(gem install xcpretty)
 
 # Now Produce Test Coverage Report
-groovy http://tiny.cc/frankenCov -s Kombie/Classes -o build/reports -r 0
+groovy http://tiny.cc/frankenCover -s Kombie/Classes -o build/reports -r 0
 ```
 
 . . this ensures using an update to date version. 
@@ -55,20 +55,20 @@ groovy http://tiny.cc/frankenCov -s Kombie/Classes -o build/reports -r 0
 #### Alternatively, the script could be installed:
 
 ```sh
-wget https://raw.github.com/jasperblues/FrankenCov/master/FrankenCov && chmod +x FrankenCov
+wget https://raw.github.com/jasperblues/FrankenCov/master/FrankenCover && chmod +x FrankenCov
 ```
 
 # Output
 
 #### cmd-line
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCov/master/sample_output/output.png)
+![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/output.png)
 
 #### browser
 
 Report file is at `build/reports/coverage/index.html`.
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCov/master/sample_output/report.png)
+![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/report.png)
 
 
 # LICENSE
