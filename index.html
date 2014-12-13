@@ -36,9 +36,8 @@
 
             <p>Code coverage for iOS and OSX. </p>
             <hr>
-            <span class="credits left">Project maintained by <a href="http://appsquick.ly">AppsQuickly</a></span>
-            <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a
-                    href="https://twitter.com/michigangraham">mattgraham</a></span>
+            <span class="credits left">A project by <a href="http://appsquick.ly">AppsQuickly</a></span>
+            <span class="template-credit">Web template by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
         </div>
 
         <p>Producing a test coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here we've
@@ -46,7 +45,7 @@
 
         <ul style="padding-bottom: 40px">
             <li>Produces an HTML test coverage report with the least possible steps.</li>
-            <li>Includes a coverage checker. This can be used in CI builds to check minumum test coverage - failing the
+            <li>Includes a coverage checker. This can be used in CI builds to check minimum test coverage - failing the
                 build if coverage falls below the required amount.
             </li>
         </ul>
@@ -84,6 +83,7 @@ $ sudo port install lcov
             <br/><br/>
 
             <h3 class="padding-top">IDE USE</h3>
+
             <p>Run your tests from Xcode or AppCode, and then produce a coverage report with:</p>
 <pre><code>groovy http://frankencover.it/with -source-dir MyProject/Classes
 </code></pre>
@@ -95,7 +95,8 @@ $ sudo port install lcov
 # First Run Tests
 xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configuration Debug \
 -destination 'platform=iOS Simulator,name=iPhone 5s,OS=8.1' | xcpretty -c --report junit
-#Above we are piping the build output through xcpretty, which is not required, but very nice.
+
+#Above we're piping output through xcpretty, which is not required but very nice!
 #(gem install xcpretty)
 
 # Now Produce Test Coverage Report
@@ -116,6 +117,7 @@ groovy http://frankencover.it/with -source-dir MyProject/Classes -required-cover
             <br/><br/>
 
             <h3>Browser</h3>
+
             <p>Reports are located at ${outputDir}/coverage/index.html</p>
             <img src="images/report.png"/>
         </div>
@@ -127,11 +129,12 @@ groovy http://frankencover.it/with -source-dir MyProject/Classes -required-cover
 
     <div>
         <h1>Attribution</h1>
+
         <p>This script just moves a bunch of files into the right place and runs some commands on them, hopefully
             saving you the time of having to read the detailed documentation and run manual steps. The real
             heavy-lifting is being done by the awesomeness of <a href="http://clang.llvm.org/">clang</a> and
             <a href="http://ltp.sourceforge.net/coverage/lcov.php">lcov</a>.</p>
     </div>
-    </div>
+</div>
 </body>
 </html>

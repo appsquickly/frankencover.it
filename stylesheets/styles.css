@@ -820,11 +820,20 @@ section #title p {
 }
 
 section #title .credits {
+    font-size: 20px;
+    font-family: 'OpenSansRegular', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    color: #696969;
+    margin-top: -10px;
+}
+
+section #title .template-credit {
     font-size: 11px;
     font-family: 'OpenSansRegular', "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
     color: #696969;
     margin-top: -10px;
+    float: right;
 }
 
 section #title .credits.left {
