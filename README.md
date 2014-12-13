@@ -62,7 +62,7 @@ groovy http://appsquickly.github.io/FrankenCover/with -source-dir MyProject/Sour
 #### Alternatively, the script could be installed:
 
 ```sh
-wget https://raw.github.com/jasperblues/FrankenCov/master/FrankenCover && chmod +x FrankenCov
+curl -SSL wget http://appsquickly.github.io/FrankenCover/with > FrankenCover && chmod +x FrankenCover
 ```
 
 # Output
