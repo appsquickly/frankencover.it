@@ -9,49 +9,74 @@ import static org.fusesource.jansi.Ansi.Color.YELLOW
 import static org.fusesource.jansi.Ansi.Color.BLACK
 import static org.fusesource.jansi.Ansi.ansi
 
+new FrankenCover(args).doReport()
 
-	
-doReport()
-
-private void doReport()
+class FrankenCover
 {
-    def cli = new CliBuilder()
-    cli.with
-            {
-                h(longOpt: 'help', 'Help - Usage Information')
-                s(longOpt: 'source-dir', 'The source directory to generate coverage for', args: 1, type: String, required: true)
-                o(longOpt: 'output-dir', 'The output directory to write coverage report', args: 1, type: String, required: true)
-                r(longOpt: 'required-coverage', 'Required line coverage', args: 1, type: String, required: true)
-                //e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: 1, type: String, required: false)
-            }
-    def opt = cli.parse(args)
-    if (!opt)
+
+    public String[] args
+    public CliBuilder cli
+
+    public FrankenCover(String[] args)
     {
-        System.exit(-1)
-    }
-    if (opt.h)
-    {
-        cli.usage()
+        super()
+        this.args = args
+        initCli()
     }
 
+    public void doReport()
+    {
+        def opt = cli.parse(args)
+        if (!opt) {
+            System.exit(-1)
+        }
+        if (opt.h) {
+            cli.usage()
+        }
 
-    String sourceDir = opt.getProperty("s")
-    def config = new CoverageReportConfig(
-            directory: "${sourceDir}",
-            excludeSymbols: ["main.m", "queue.h"]
-    )
-    String outPutDir = opt.getProperty("o")
-    Double requiredCoverage = new Double(opt.getProperty("r"))
 
-    new CoverageReportGenerator(outPutDir, config, requiredCoverage, new AntBuilder())
+        String outPutDir = opt.getProperty("o") ? opt.getProperty("o") : "build/reports"
+        String sourceDir = opt.getProperty("s")
+        def reportConfig = new ReportConfig(directory: "${sourceDir}", excludeSymbols: ["main.m", "queue.h"])
+        def ideConfig = new IDEConfig()
+        if (opt.getProperty("x") || opt.getProperty("a")) {
+            ideConfig.withAppCode = opt.getProperty("a")
+            ideConfig.withXcode = opt.getProperty("x")
+        }
+        else {
+            ideConfig.withAppCode = true
+            ideConfig.withXcode = true
+        }
+
+        Double requiredCoverage = new Double(opt.getProperty("r"))
+
+        new ReportGenerator(outPutDir, requiredCoverage, reportConfig, ideConfig, new AntBuilder())
+    }
+
+    private void initCli()
+    {
+        cli = new CliBuilder()
+        cli.with
+                {
+                    h(longOpt: 'help', 'Help - Usage Information')
+                    s(longOpt: 'source-dir', 'The source directory to generate coverage for', args: 1, type: String, required: true)
+                    o(longOpt: 'output-dir', 'The output directory to write coverage report', args: 1, type: String, required: false)
+                    r(longOpt: 'required-coverage', 'Required line coverage', args: 1, type: String, required: true)
+                    a(longOpt: 'appcode', 'Search in AppCode\'s output directory. (default is both Xcode and AppCode\'s output dirs', args: 0, type: boolean, required: false)
+                    x(longOpt: 'xcode', 'Search in Xcode\'s output directory. (default is both Xcode and AppCode\'s output dirs', args: 0, type: boolean, required: false)
+                    //e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: 1, type: String, required: false)
+                }
+    }
+
 }
 
 
-class CoverageReportGenerator
+class ReportGenerator
 {
     String outputDir
-    CoverageReportConfig config
     Double requiredCoverage
+    ReportConfig reportConfig
+    IDEConfig ideConfig
     AntBuilder ant
 
     private File reportLocation
@@ -59,17 +84,18 @@ class CoverageReportGenerator
     // ================================================================ //
     // Constructors
 
-    CoverageReportGenerator(String outputDir, CoverageReportConfig config, Double requiredCoverage, AntBuilder ant)
+    ReportGenerator(String outputDir, Double requiredCoverage, ReportConfig reportConfig, IDEConfig ideConfig, AntBuilder ant)
     {
-        this.config = config
         this.outputDir = outputDir
         this.requiredCoverage = requiredCoverage
+        this.reportConfig = reportConfig
+        this.ideConfig = ideConfig
         this.ant = ant
         this.reportLocation = new File("${outputDir}/coverage")
 
-		print ansi().a(INTENSITY_BOLD)
-		print ansi().fg(YELLOW).a("\n▸ ")
-		print ansi().fg(BLACK).a("Test Coverage:\n").reset()
+        print ansi().a(INTENSITY_BOLD)
+        print ansi().fg(YELLOW).a("\n▸ ")
+        print ansi().fg(BLACK).a("Test Coverage:\n").reset()
 
         start();
     }
@@ -86,21 +112,21 @@ class CoverageReportGenerator
         def coverageData = "${outputDir}/temp/coverage-data"
         def coverageInfoFile = "${outputDir}/temp/coverage.info"
         def genHtmlCmd = "genhtml --no-function-coverage --no-branch-coverage"
-        def excludeSymbols = config.excludeSymbols.join(" ")
+        def excludeSymbols = reportConfig.excludeSymbols.join(" ")
 
         def script = """\
             |#!/bin/sh
             |mkdir -p ${collationDir}
             |mkdir -p ${coverageData}
-            |find ~/Library/Developer/Xcode/DerivedData/ ${config.dataFileNames()} | rsync --files-from=- / ${collationDir}
+            |find ${ideConfig.searchDirectories()} ${reportConfig.dataFileNames()} | rsync --files-from=- / ${collationDir}
             |find ${collationDir} -type file -exec cp -fr {} ${coverageData} \\;
             |rm -fr ${collationDir}
             |geninfo ${coverageData}/*.gcno --no-recursion --output-filename ${coverageInfoFile}.temp
             |lcov -r ${coverageInfoFile}.temp ${excludeSymbols} > ${coverageInfoFile}
-            |${genHtmlCmd} -o ${reportLocation.absolutePath} --prefix ${config.prefix()} ${coverageInfoFile}
+            |${genHtmlCmd} -o ${reportLocation.absolutePath} --prefix ${reportConfig.prefix()} ${coverageInfoFile}
             """.stripMargin()
 
-		//println (script)
+//        println(script)
 
         Process process = "bash".execute();
         process.outputStream.write(script.getBytes())
@@ -119,11 +145,10 @@ class CoverageReportGenerator
         summary.consumeProcessOutput(os, os)
         summary.waitFor()
 
-        def parser = new CoverageReportParser(os.toString())
+        def parser = new ReportParser(os.toString())
         parser.print()
 
-        if (parser.lineCoveragePercent < requiredCoverage)
-        {
+        if (parser.lineCoveragePercent < requiredCoverage) {
             print ansi().a(INTENSITY_BOLD).fg(RED).a("  <----- Required coverage is ${requiredCoverage}%\n\n").reset()
             System.exit(-1)
         }
@@ -133,7 +158,7 @@ class CoverageReportGenerator
 }
 
 
-class CoverageReportParser
+class ReportParser
 {
 
     Double lineCoveragePercent;
@@ -142,7 +167,7 @@ class CoverageReportParser
     // ================================================================ //
     // Constructors
 
-    CoverageReportParser(String summary)
+    ReportParser(String summary)
     {
         parse(summary);
     }
@@ -152,24 +177,21 @@ class CoverageReportParser
 
 
     void print()
-    {        
+    {
 
         print ansi().a(INTENSITY_BOLD)
-        if (lineCoveragePercent < 60)
-        {
+        if (lineCoveragePercent < 60) {
             print ansi().fg(RED).a("    ✗").reset()
-	        print ansi().a(" lines......: ")
-			print ansi().fg(RED)
+            print ansi().a(" lines......: ")
+            print ansi().fg(RED)
         }
-        else if (lineCoveragePercent < 79)
-        {
+        else if (lineCoveragePercent < 79) {
             print ansi().fg(YELLOW).a("    ⚠").reset()
-	        print ansi().a(" lines......: ")
+            print ansi().a(" lines......: ")
         }
-        else
-        {
+        else {
             print ansi().fg(GREEN).a("    ✓ ").reset()
-	        print ansi().a(" lines......: ")
+            print ansi().a(" lines......: ")
         }
 
         print ansi().a(INTENSITY_BOLD)
@@ -184,22 +206,20 @@ class CoverageReportParser
     {
         boolean linesFound = false
         summary.eachLine {
-            if (it.startsWith("  lines......:"))
-            {
+            if (it.startsWith("  lines......:")) {
                 def lineSummary = it.split("%")
                 lineCoveragePercent = new Double(lineSummary[0].substring(15))
                 lineCoverageDetail = lineSummary[1].trim()
                 linesFound = true
             }
         }
-        if (!linesFound)
-        {
+        if (!linesFound) {
             throw new RuntimeException("Coverage data not found")
         }
     }
 }
 
-class CoverageReportConfig
+class ReportConfig
 {
 
     String directory
@@ -214,8 +234,15 @@ class CoverageReportConfig
 
     String prefix()
     {
-		def baseDir = new File(".").getAbsolutePath()		
-        return baseDir.substring(0, baseDir.length() - 1) + "${directory}"
+        def prefix
+        if (directory.startsWith("/")) {
+            prefix = directory
+        }
+        else {
+            def baseDir = new File(".").getAbsolutePath()
+            prefix = baseDir.substring(0, baseDir.length() - 1) + "${directory}"
+        }
+        return prefix
     }
 
     String dataFileNames()
@@ -233,22 +260,72 @@ class CoverageReportConfig
 
     private List<String> cachedFileNames()
     {
-        if (!fileNames)
-        {
+        if (!fileNames) {
             fileNames = new ArrayList<String>()
 
-            new File("./${directory}").eachFileRecurse(FileType.FILES) { file ->
+            def searchDir = directory.startsWith("/") ? new File(directory) : new File("./${directory}")
+
+            searchDir.eachFileRecurse(FileType.FILES) { file ->
                 def fileName = file.name;
-                if (fileName.endsWith(".h"))
-                {
+                if (fileName.endsWith(".h")) {
                     fileNames << fileName.substring(0, fileName.length() - 2)
                 }
             }
         }
-		
-		//println ("Filenames: " + fileNames)
+
+        //println ("Filenames: " + fileNames)
         fileNames
     }
 
 
 }
+
+class IDEConfig
+{
+
+    public boolean withAppCode
+    public boolean withXcode
+
+    def cachedAppCodeDir = null
+
+    public String xcodeDir()
+    {
+        return "~/Library/Developer/Xcode/DerivedData"
+    }
+
+    public String appCodeDir()
+    {
+        if (cachedAppCodeDir == null) {
+            def highestAppCodeInstalled = 0
+            new File("${System.getProperty("user.home")}/Library/Caches").eachFile(FileType.DIRECTORIES) { directory ->
+                def dir = directory.name;
+                if (dir.startsWith("appCode")) {
+                    highestAppCodeInstalled = dir.replaceAll("[^\\d.]", "").toInteger()
+                }
+            }
+            if (highestAppCodeInstalled) {
+                cachedAppCodeDir = "~/Library/Caches/appCode${highestAppCodeInstalled}"
+            }
+        }
+        return cachedAppCodeDir
+    }
+
+    public String searchDirectories()
+    {
+        def searchDirectories = new StringBuilder()
+        if (withXcode) {
+            searchDirectories.append(xcodeDir())
+            searchDirectories.append(" ")
+        }
+        if (withAppCode && appCodeDir() != null) {
+            searchDirectories.append(appCodeDir())
+        }
+        return searchDirectories.toString()
+    }
+
+}
+
+
+
+
+
