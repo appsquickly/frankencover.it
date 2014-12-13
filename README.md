@@ -47,7 +47,7 @@ xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configura
 #(gem install xcpretty)
 
 # Now Produce Test Coverage Report
-groovy https://raw.github.com/jasperblues/FrankenCov/master/FrankenCov -s Kombie/Classes -o build/reports -r 0
+groovy http://tiny.cc/frankenCov -s Kombie/Classes -o build/reports -r 0
 ```
 
 . . this ensures using an update to date version. 
