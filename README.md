@@ -25,11 +25,11 @@ sudo port install lcov
 
 #Usage
 
-#### Set your main App target to produce test coverage output (debug mode only). 
+Set your main App target to produce test coverage output (debug mode only). 
 
 ![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/Coverage.png)
 
-#### Set your main App target to instrument program flow (debug mode only). 
+Set your main App target to instrument program flow (debug mode only). 
 
 ![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/Instrument.png)
 
