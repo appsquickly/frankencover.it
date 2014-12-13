@@ -59,7 +59,7 @@ groovy http://appsquickly.github.io/FrankenCover/with -source-dir MyProject/Sour
 
 . . this ensures using an update to date version. 
 
-#### Install locallay
+#### Install locally
 
 If you don't want to run the hosted script, it can be installed locally with:
 
