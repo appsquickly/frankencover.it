@@ -49,7 +49,7 @@ class FrankenCover
             ideConfig.withXcode = true
         }
 
-        Double requiredCoverage = opt.getProperty("r") ? new Double(opt.getProperty("r")) : 0
+        Double requiredCoverage = opt.getProperty("r") ? new Double(opt.getProperty("r").replaceAll("%", "")) : 0
 
         new ReportGenerator(outPutDir, requiredCoverage, reportConfig, ideConfig, new AntBuilder())
     }
