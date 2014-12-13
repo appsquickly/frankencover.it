@@ -1,4 +1,4 @@
-# FrankenCov
+# FrankenCover
 
 Producing a test coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here we've glued them all together into something that (hopefully) just works. 
 
@@ -7,12 +7,11 @@ Producing a test coverage report for iOS and OSX projects requires a mish-mash o
  
 #Installing
 
-First install dependencies. . .
+The script itself can be run remotely, but we'll first need to install dependencies .  .
 
 ### With HomeBrew
 
 ```sh
-brew install wget
 brew install groovy
 brew install lcov
 ```
@@ -20,7 +19,6 @@ brew install lcov
 ### With MacPorts
 
 ```sh
-sudo port install wget
 sudo port install groovy
 sudo port install lcov
 ```
@@ -29,19 +27,15 @@ sudo port install lcov
 
 With the following command, we're installing into the current directory. It could also be placed in a shared location. 
 
-```sh
-wget https://raw.github.com/jasperblues/FrankenCov/master/FrankenCov && chmod +x FrankenCov
-```
-
 #Usage
 
 #### Set your main App target to produce test coverage output (debug mode only). 
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCov/master/sample_output/Coverage.png)
+![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/Coverage.png)
 
 #### Set your main App target to instrument program flow (debug mode only). 
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCov/master/sample_output/Instrument.png)
+![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/Instrument.png)
 
 #### Create a build script
 
@@ -53,20 +47,28 @@ xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configura
 #(gem install xcpretty)
 
 # Now Produce Test Coverage Report
-./FrankenCov -source-dir MyProject/Classes -output-dir build/reports -required-coverage 85 
+groovy http://tiny.cc/frankenCover -s Kombie/Classes -o build/reports -r 0
+```
+
+. . this ensures using an update to date version. 
+
+#### Alternatively, the script could be installed:
+
+```sh
+wget https://raw.github.com/jasperblues/FrankenCov/master/FrankenCover && chmod +x FrankenCov
 ```
 
 # Output
 
 #### cmd-line
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCov/master/sample_output/output.png)
+![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/output.png)
 
 #### browser
 
 Report file is at `build/reports/coverage/index.html`.
 
-![Enable Coverage](https://raw.github.com/jasperblues/FrankenCov/master/sample_output/report.png)
+![Enable Coverage](https://raw.github.com/jasperblues/FrankenCover/master/sample_output/report.png)
 
 
 # LICENSE
