@@ -31,7 +31,7 @@ Set your main App target to produce test coverage output (debug mode only).
 
 Set your main App target to instrument program flow (debug mode only). 
 
-![Enable Coverage](http://appsquickly.github.io/FrankenCover/images/Instrument.png)
+![Enable Instrumentation](http://appsquickly.github.io/FrankenCover/images/Instrument.png)
 
 #### Create a build script
 
@@ -58,13 +58,13 @@ wget https://raw.github.com/jasperblues/FrankenCov/master/FrankenCover && chmod 
 
 #### cmd-line
 
-![Enable Coverage](http://appsquickly.github.io/FrankenCover/images/sample_output/output.png)
+![Output](http://appsquickly.github.io/FrankenCover/images/output.png)
 
 #### browser
 
 Report file is at `build/reports/coverage/index.html`.
 
-![Enable Coverage](http://appsquickly.github.io/FrankenCover/images/report.png)
+![Browser](http://appsquickly.github.io/FrankenCover/images/report.png)
 
 
 # LICENSE
