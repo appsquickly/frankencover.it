@@ -3,6 +3,7 @@ import groovy.io.FileType
 import org.apache.tools.ant.util.FileUtils
 
 import static org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD
+import static org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD_OFF
 import static org.fusesource.jansi.Ansi.Color.RED
 import static org.fusesource.jansi.Ansi.Color.GREEN
 import static org.fusesource.jansi.Ansi.Color.YELLOW
@@ -153,6 +154,10 @@ class ReportGenerator
             System.exit(-1)
         }
         print ansi().a("\n\n").reset()
+        print ansi().a("      (Full report is at ").a("${outputDir}/coverage/index.html)")
+        print ansi().a("\n\n").reset()
+
+
     }
 
 }
