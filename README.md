@@ -76,9 +76,12 @@ Report file is at `build/reports/coverage/index.html`.
 If you don't want to run the hosted script, it can be installed locally with:
 
 ```sh
-curl http://frankencover.it/with > FrankenCover && chmod +x FrankenCover
+curl -SSL https://frankencover.it/with > FrankenCover && chmod +x FrankenCover
 ```
 
+# Contributing
+
+The script and documentation are located on the gh-pages branch. 
 
 # LICENSE
 
