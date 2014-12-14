@@ -105,7 +105,7 @@ class ReportGenerator
 
         print ansi().a(INTENSITY_BOLD)
         print ansi().fg(YELLOW).a("\n▸ ")
-        print ansi().fg(BLACK).a("Code Coverage:\n").reset()
+        print ansi().fg(BLACK).a("Code Coverage ").reset().a("${reportConfig.directory}\n")
     }
 
     // ================================================================ //
@@ -239,7 +239,6 @@ class ReportConfig
     // ================================================================ //
     // Public
 
-
     String prefix()
     {
         def prefix
@@ -261,6 +260,10 @@ class ReportConfig
             dataFiles.add("-name ${fileName}.gcda")
         }
         dataFiles.join(' -o ')
+    }
+
+    public void setDirectory(String directory) {
+        this.directory = directory.endsWith("/") ? directory : directory + "/"
     }
 
     // ================================================================ //
