@@ -51,7 +51,8 @@ class FrankenCover
 
     private void initCli()
     {
-        def usageInstructions = 'groovy http://frankencover.it/with \n\nFor instrunctions on configuring Xcode to output coverage data, visit http://frankencover.it'
+        def usageInstructions = """groovy http://frankencover.it/with \n\n
+        For instrunctions on configuring Xcode to output coverage data, visit http://frankencover.it"""
         cli = new CliBuilder(usage: usageInstructions)
         cli.with
                 {
