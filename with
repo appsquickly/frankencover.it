@@ -45,14 +45,16 @@ class FrankenCover
             "CGGeometry.h", 
             "MKGeometry.h"])
             
-        def ideConfig = new IDEConfig(withXcode: true, withAppCode: true)
+        def ideConfig = new IDEConfig(withXcode: true, withAppCodeIfAvailable: true)
         if (opt.getProperty("x") || opt.getProperty("a")) {
-            ideConfig.withAppCode = opt.getProperty("a")
+            ideConfig.withAppCodeIfAvailable = opt.getProperty("a")
             ideConfig.withXcode = opt.getProperty("x")
         }
 
         Double requiredCoverage = opt.getProperty("r") ? new Double(opt.getProperty("r").replaceAll("%", "")) : 0
-        new ReportGenerator(outPutDir, requiredCoverage, reportConfig, ideConfig, new AntBuilder())
+        def generator = new ReportGenerator(outPutDir, requiredCoverage, reportConfig, ideConfig, new AntBuilder())
+        generator.generate()
+        System.exit(generator.failed ? -1 : 0)
     }
 
     private void initCli()
@@ -84,6 +86,8 @@ class ReportGenerator
     IDEConfig ideConfig
     AntBuilder ant
 
+    boolean failed
+
     private File reportLocation
 
     // ================================================================ //
@@ -101,17 +105,12 @@ class ReportGenerator
         print ansi().a(INTENSITY_BOLD)
         print ansi().fg(YELLOW).a("\n▸ ")
         print ansi().fg(BLACK).a("Code Coverage:\n").reset()
-
-        start();
     }
 
     // ================================================================ //
     // Public
 
-    // ================================================================ //
-    // Private
-
-    private void start()
+    public void generate()
     {
         def collationDir = "${outputDir}/temp/coverage-data-collate"
         def coverageData = "${outputDir}/temp/coverage-data"
@@ -150,18 +149,17 @@ class ReportGenerator
         summary.consumeProcessOutput(os, os)
         summary.waitFor()
 
+
         def parser = new ReportParser(os.toString())
         parser.print()
 
         if (parser.lineCoveragePercent < requiredCoverage) {
             print ansi().a(INTENSITY_BOLD).fg(RED).a("  <----- Required coverage is ${requiredCoverage}%\n").reset()
-            System.exit(-1)
+            failed = true
         }
         print ansi().a("\n").reset()
         print ansi().a("    📊  full report..: ${outputDir}/coverage/index.html")
         print ansi().a("\n\n").reset()
-
-
     }
 
 }
@@ -292,7 +290,7 @@ class ReportConfig
 class IDEConfig
 {
 
-    public boolean withAppCode
+    public boolean withAppCodeIfAvailable
     public boolean withXcode
 
     def cachedAppCodeDir = null
@@ -327,7 +325,7 @@ class IDEConfig
             searchDirectories.append(xcodeDir())
             searchDirectories.append(" ")
         }
-        if (withAppCode && appCodeDir() != null) {
+        if (withAppCodeIfAvailable && appCodeDir() != null) {
             searchDirectories.append(appCodeDir())
         }
         return searchDirectories.toString()
