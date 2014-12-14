@@ -154,7 +154,7 @@ class ReportGenerator
         parser.print()
 
         if (parser.lineCoveragePercent < requiredCoverage) {
-            print ansi().a(INTENSITY_BOLD).fg(RED).a("  <----- Required coverage is ${requiredCoverage}%\n").reset()
+            print ansi().a(INTENSITY_BOLD).fg(RED).a("  <----- Required coverage is ${requiredCoverage}%").reset()
             failed = true
         }
         print ansi().a("\n").reset()
