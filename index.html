@@ -122,12 +122,22 @@ groovy http://frankencover.it/with -source-dir MyProject/Classes -required-cover
 
         <div style="padding-top: 50px">
             <h2>INSTALLING LOCALLY</h2>
-            <p>Using the hosted script has the advantage of alleviating the need to update for new features or bug fixes, however if you
-                prefer not to run a remote script, it can be installed locally with:</p>
+            <p>Using the hosted script has an advantage in that it alleviates the need to update for new features or bug fixes, however if
+                you prefer not to run a remote script, it can be installed locally with:</p>
 
+            <pre><code>curl http://frankencover.it/with > FrankenCover && chmod +x FrankenCover</code></pre>
 
-            <pre><code>curl -SSL http://frankencover.it/with > FrankenCover && chmod +x FrankenCover</code></pre>
+            <p>To review the contents of the script prior to execution, use: </p>
+            <pre><code>curl http://frankencover.it/with | more</code></pre>
+
         </div>
+
+        <div style="padding-top: 50px">
+            <h1>LICENSE</h1>
+
+            <p>Apache License, Version 2.0, January 2004, http://www.apache.org/licenses/</p>
+        </div>
+
 
         <!--[if !IE]>
         <script>fixScale(document);</script><![endif]-->
@@ -147,13 +157,16 @@ groovy http://frankencover.it/with -source-dir MyProject/Classes -required-cover
     <div>
         <h1>ATTRIBUTION</h1>
 
-        <p>This frankencover.it script just moves a bunch of files into the right place and runs some commands on them, hopefully
+        <p>The frankencover.it script just moves a bunch of files into the right place and runs some commands on them, hopefully
             saving you the time of having to read the detailed documentation and run manual steps. The real
             heavy-lifting is being done by the awesomeness of <a href="http://clang.llvm.org/">clang</a> and
             <a href="http://ltp.sourceforge.net/coverage/lcov.php">lcov</a>.</p>
 
         <span class="template-credit">This site is hosted on GitHub pages, and the web template was kindly provided by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
     </div>
+
+
+
 </div>
 </body>
 </html>
