@@ -52,7 +52,7 @@ class FrankenCover
     private void initCli()
     {
         def usageInstructions = """\
-        |groovy http://frankencover.it/with --source-dir <sourceDir> <options>\n\n
+        |groovy http://frankencover.it/with -s <sourceDir> <options>\n\n
         |For instrunctions on configuring Xcode to output coverage data, visit http://frankencover.it\n\n
         """
         cli = new CliBuilder(usage: usageInstructions.stripMargin())
