@@ -38,7 +38,13 @@ class FrankenCover
 
         String outPutDir = opt.getProperty("o") ? opt.getProperty("o") : "build/reports"
         String sourceDir = opt.getProperty("s")
-        def reportConfig = new ReportConfig(directory: "${sourceDir}", excludeSymbols: ["main.m", "queue.h"])
+        def reportConfig = new ReportConfig(directory: "${sourceDir}", excludeSymbols: 
+            ["main.m", 
+            "queue.h",
+            "once.h",
+            "CGGeometry.h", 
+            "MKGeometry.h"])
+            
         def ideConfig = new IDEConfig(withXcode: true, withAppCode: true)
         if (opt.getProperty("x") || opt.getProperty("a")) {
             ideConfig.withAppCode = opt.getProperty("a")
