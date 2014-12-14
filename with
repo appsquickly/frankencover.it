@@ -43,7 +43,8 @@ class FrankenCover
             "queue.h",
             "once.h",
             "CGGeometry.h", 
-            "MKGeometry.h"])
+            "MKGeometry.h",
+            "NSRange.h"])
             
         def ideConfig = new IDEConfig(withXcode: true, withAppCodeIfAvailable: true)
         if (opt.getProperty("x") || opt.getProperty("a")) {
