@@ -33,8 +33,7 @@
 
             <p><a href="http://en.wikipedia.org/wiki/Code_coverage">Code coverage</a> for iOS and OSX. </p>
             <hr>
-            <span class="credits left">A project by <a href="http://appsquick.ly">AppsQuickly</a></span>
-            <span class="template-credit">Web template by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+            <span class="credits right">A project by <a href="http://appsquick.ly">AppsQuickly</a></span>
         </div>
 
         <p>Generating a code coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here we've
@@ -123,7 +122,7 @@ groovy http://frankencover.it/with -source-dir MyProject/Classes -required-cover
 
         <div style="padding-top: 50px">
             <h2>INSTALLING LOCALLY</h2>
-            <p>If you don't want to run the hosted script, it can be installed locally with:</p>
+            <p>One advantage or running the hosted script is that If you don't want to run the hosted script, it can be installed locally with:</p>
 
 
             <pre><code>curl -SSL http://frankencover.it/with > FrankenCover && chmod +x FrankenCover</code></pre>
@@ -147,10 +146,12 @@ groovy http://frankencover.it/with -source-dir MyProject/Classes -required-cover
     <div>
         <h1>ATTRIBUTION</h1>
 
-        <p>This script just moves a bunch of files into the right place and runs some commands on them, hopefully
+        <p>This frankencover.it script just moves a bunch of files into the right place and runs some commands on them, hopefully
             saving you the time of having to read the detailed documentation and run manual steps. The real
             heavy-lifting is being done by the awesomeness of <a href="http://clang.llvm.org/">clang</a> and
             <a href="http://ltp.sourceforge.net/coverage/lcov.php">lcov</a>.</p>
+
+        <span class="template-credit">This site is hosted on GitHub pages, and the web template was kindly provided by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
     </div>
 </div>
 </body>
