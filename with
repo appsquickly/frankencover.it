@@ -158,7 +158,7 @@ class ReportGenerator
             System.exit(-1)
         }
         print ansi().a("\n\n").reset()
-        print ansi().a("    📊 Full report..:").a(" $open ${outputDir}/coverage/index.html)")
+        print ansi().a("    📊 Full report..:").a(" open ${outputDir}/coverage/index.html)")
         print ansi().a("\n\n").reset()
 
 
