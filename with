@@ -154,11 +154,11 @@ class ReportGenerator
         parser.print()
 
         if (parser.lineCoveragePercent < requiredCoverage) {
-            print ansi().a(INTENSITY_BOLD).fg(RED).a("  <----- Required coverage is ${requiredCoverage}%\n\n").reset()
+            print ansi().a(INTENSITY_BOLD).fg(RED).a("  <----- Required coverage is ${requiredCoverage}%\n").reset()
             System.exit(-1)
         }
-        print ansi().a("\n\n").reset()
-        print ansi().a("    📊 Full report..: open ${outputDir}/coverage/index.html)")
+        print ansi().a("\n").reset()
+        print ansi().a("    📊  Full report..: $open ${outputDir}/coverage/index.html)")
         print ansi().a("\n\n").reset()
 
 
@@ -191,16 +191,16 @@ class ReportParser
         print ansi().a(INTENSITY_BOLD)
         if (lineCoveragePercent < 60) {
             print ansi().fg(RED).a("    ✗").reset()
-            print ansi().a(" lines........: ")
+            print ansi().a(" lines.........: ")
             print ansi().fg(RED)
         }
         else if (lineCoveragePercent < 79) {
             print ansi().fg(YELLOW).a("    ⚠").reset()
-            print ansi().a(" lines........: ")
+            print ansi().a(" lines.........: ")
         }
         else {
             print ansi().fg(GREEN).a("    ✓ ").reset()
-            print ansi().a(" lines........: ")
+            print ansi().a(" lines.........: ")
         }
 
         print ansi().a(INTENSITY_BOLD)
