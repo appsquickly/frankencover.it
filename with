@@ -51,7 +51,8 @@ class FrankenCover
 
     private void initCli()
     {
-        cli = new CliBuilder(usage: 'groovy http://frankencover.it/with')
+        def usageInstructions = 'groovy http://frankencover.it/with \n\nFor instrunctions on configuring Xcode to output coverage data, visit http://frankencover.it'
+        cli = new CliBuilder(usage: usageInstructions)
         cli.with
                 {
                     h(longOpt: 'help', 'Help - Usage Information')
@@ -91,7 +92,7 @@ class ReportGenerator
 
         print ansi().a(INTENSITY_BOLD)
         print ansi().fg(YELLOW).a("\n▸ ")
-        print ansi().fg(BLACK).a("Test Coverage:\n").reset()
+        print ansi().fg(BLACK).a("Code Coverage:\n").reset()
 
         start();
     }
