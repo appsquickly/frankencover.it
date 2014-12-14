@@ -27,18 +27,18 @@ sudo port install lcov
 
 Set your main App target to produce test coverage output (debug mode only). 
 
-![Enable Coverage](http://appsquickly.github.io/FrankenCover/images/Coverage.png)
+![Enable Coverage](http://frankencover.it/images/Coverage.png)
 
 Set your main App target to instrument program flow (debug mode only). 
 
-![Enable Instrumentation](http://appsquickly.github.io/FrankenCover/images/Instrument.png)
+![Enable Instrumentation](http://frankencover.it/images/Instrument.png)
 
 ### IDE Use
 
 Run tests in your IDE (AppCode or Xcode) and produce a report with: 
 
 ```sh
-groovy http://appsquickly.github.io/FrankenCover/with -source-dir MyProject/Source
+groovy http://frankencover.it/with -source-dir MyProject/Source
 ```
 
 ### Build server or cmd-line use
@@ -53,7 +53,7 @@ xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configura
 #(gem install xcpretty)
 
 # Now Produce Test Coverage Report
-groovy http://appsquickly.github.io/FrankenCover/with -source-dir MyProject/Source -required-coverage 85
+groovy http://frankencover.it/with -source-dir MyProject/Source -required-coverage 85
 #Above we set required coverage to 85%. Build fails if coverage falls below this value. 
 ```
 
@@ -63,20 +63,20 @@ groovy http://appsquickly.github.io/FrankenCover/with -source-dir MyProject/Sour
 
 #### cmd-line
 
-![Output](http://appsquickly.github.io/FrankenCover/images/output.png)
+![Output](http://frankencover.it/images/output.png)
 
 #### browser
 
 Report file is at `build/reports/coverage/index.html`.
 
-![Browser](http://appsquickly.github.io/FrankenCover/images/report.png)
+![Browser](http://frankencover.it/images/report.png)
 
 #### Install locally
 
 If you don't want to run the hosted script, it can be installed locally with:
 
 ```sh
-curl -SSL http://appsquickly.github.io/FrankenCover/with > FrankenCover && chmod +x FrankenCover
+curl http://frankencover.it/with > FrankenCover && chmod +x FrankenCover
 ```
 
 
