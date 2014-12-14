@@ -125,10 +125,10 @@ groovy http://frankencover.it/with -source-dir MyProject/Classes -required-cover
             <p>Using the hosted script has an advantage in that it alleviates the need to update for new features or bug fixes, however if
                 you prefer not to run a remote script, it can be installed locally with:</p>
 
-            <pre><code>curl http://frankencover.it/with > FrankenCover && chmod +x FrankenCover</code></pre>
+            <pre><code>curl -SSL http://frankencover.it/with > FrankenCover && chmod +x FrankenCover</code></pre>
 
             <p>Alternatively, to review the contents of the script prior to execution, use: </p>
-            <pre><code>curl http://frankencover.it/with | more</code></pre>
+            <pre><code>curl -SSL http://frankencover.it/with | more</code></pre>
 
         </div>
 
