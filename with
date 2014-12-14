@@ -191,16 +191,16 @@ class ReportParser
         print ansi().a(INTENSITY_BOLD)
         if (lineCoveragePercent < 60) {
             print ansi().fg(RED).a("    ✗").reset()
-            print ansi().a(" lines.........: ")
+            print ansi().a("  lines........: ")
             print ansi().fg(RED)
         }
         else if (lineCoveragePercent < 79) {
             print ansi().fg(YELLOW).a("    ⚠").reset()
-            print ansi().a(" lines.........: ")
+            print ansi().a("  lines........: ")
         }
         else {
             print ansi().fg(GREEN).a("    ✓ ").reset()
-            print ansi().a(" lines.........: ")
+            print ansi().a("  lines........: ")
         }
 
         print ansi().a(INTENSITY_BOLD)
