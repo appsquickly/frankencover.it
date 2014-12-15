@@ -159,7 +159,7 @@ class ReportGenerator
             failed = true
         }
         print ansi().a("\n").reset()
-        print ansi().a("    📊  full report..: ${outputDir}/coverage/index.html")
+        print ansi().a("   📊  full report..: ${outputDir}/coverage/index.html")
         print ansi().a("\n\n").reset()
     }
 
@@ -199,7 +199,7 @@ class ReportParser
             print ansi().fg(YELLOW)
         }
         else {
-            print ansi().fg(GREEN).a("    ✓ ").reset()
+            print ansi().fg(GREEN).a("    ✓").reset()
             print ansi().a(" lines........: ")
             print ansi().fg(GREEN)
         }
