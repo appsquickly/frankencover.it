@@ -81,7 +81,7 @@ curl -SSL https://frankencover.it/with > FrankenCover && chmod +x FrankenCover
 
 # Contributing
 
-The script and documentation are located on the gh-pages branch. 
+For now, the script, along with documentation is located on the gh-pages branch. 
 
 # LICENSE
 
