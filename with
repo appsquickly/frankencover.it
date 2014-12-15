@@ -159,7 +159,7 @@ class ReportGenerator
             failed = true
         }
         print ansi().a("\n").reset()
-        print ansi().a("    📊  full report..: ${outputDir}/coverage/index.html")
+        print ansi().a("    📊   full report..: ${outputDir}/coverage/index.html")
         print ansi().a("\n\n").reset()
     }
 
