@@ -22,7 +22,7 @@ class FrankenCliReader
     {
         super()
         this.args = args
-        initCli()
+        this.cli = initCliBuilder()
     }
 
     public void execute()
@@ -40,14 +40,14 @@ class FrankenCliReader
         String sourceDir = opt.getProperty("s")
 
         //Stop some non-source tree symbols leaking into the report
-        def reportConfig = new ReportConfig(directory: "${sourceDir}", excludeSymbols: 
-            ["main.m", 
-            "queue.h",
-            "once.h",
-            "CGGeometry.h", 
-            "MKGeometry.h",
-            "NSRange.h"])
-            
+        def reportConfig = new ReportConfig(directory: "${sourceDir}", excludeSymbols:
+                ["main.m",
+                 "queue.h",
+                 "once.h",
+                 "CGGeometry.h",
+                 "MKGeometry.h",
+                 "NSRange.h"])
+
         def ideConfig = new IDEConfig(withXcode: true, withAppCodeIfAvailable: true)
         if (opt.getProperty("x") || opt.getProperty("a")) {
             ideConfig.withAppCodeIfAvailable = opt.getProperty("a")
@@ -60,13 +60,13 @@ class FrankenCliReader
         System.exit(generator.failed ? -1 : 0)
     }
 
-    private void initCli()
+    private CliBuilder initCliBuilder()
     {
         def usageInstructions = """groovy http://frankencover.it/with -s <sourceDir> <options>\n\n
         |For instructions on configuring Xcode to output coverage data, visit http://frankencover.it\n\n
         """.stripMargin().stripIndent()
-        cli = new CliBuilder(usage: usageInstructions)
-        cli.with
+        CliBuilder builder = new CliBuilder(usage: usageInstructions)
+        builder.with
                 {
                     h(longOpt: 'help', 'Help - Usage Information')
                     s(longOpt: 'source-dir', 'The source directory to generate coverage for', args: 1, type: String, required: true)
@@ -77,6 +77,7 @@ class FrankenCliReader
                     //TODO: Do we need the following opt?
                     //e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: 1, type: String, required: false)
                 }
+        return builder
     }
 }
 
@@ -115,9 +116,10 @@ class ReportGenerator
 
     public void generate()
     {
-        def collationDir = "${outputDir}/temp/coverage-data-collate"
-        def coverageData = "${outputDir}/temp/coverage-data"
-        def coverageInfoFile = "${outputDir}/temp/coverage.info"
+        def tempDir = "${outputDir}/temp"
+        def collationDir = "${tempDir}/coverage-data-collate"
+        def coverageData = "${tempDir}/coverage-data"
+        def coverageInfoFile = "${tempDir}/coverage.info"
         def genHtmlCmd = "genhtml --no-function-coverage --no-branch-coverage"
         def excludeSymbols = reportConfig.excludeSymbols.join(" ")
 
@@ -138,10 +140,10 @@ class ReportGenerator
         Process process = "bash".execute();
         process.outputStream.write(script.getBytes())
         process.outputStream.close()
-
         process.waitFor()
 
         printSummary(coverageInfoFile)
+        "rm -fr ${tempDir}".execute().waitFor()
 
     }
 
@@ -164,6 +166,7 @@ class ReportGenerator
         print ansi().a("   📊  full report..: ${outputDir}/coverage/index.html")
         print ansi().a("\n\n").reset()
     }
+
 
 }
 
@@ -189,7 +192,10 @@ class ReportParser
             }
         }
         if (!linesFound) {
-            throw new RuntimeException("Coverage data not found")
+            throw new RuntimeException(ansi().a(INTENSITY_BOLD).fg(RED).a("\n\n✗ Coverage data not found\n").reset()
+                    .a("    ☐ To see how to set build flags, visit http://frankencover.it\n")
+                    .a("    ☐ Exercise your code with tests or otherwise.\n")
+                    .a("    ☐ Run this script again.\n\n").toString())
         };
     }
 
@@ -222,7 +228,7 @@ class ReportParser
     }
 
 
-    }
+}
 
 class ReportConfig
 {
@@ -259,7 +265,8 @@ class ReportConfig
         dataFiles.join(' -o ')
     }
 
-    public void setDirectory(String directory) {
+    public void setDirectory(String directory)
+    {
         this.directory = directory.endsWith("/") ? directory : directory + "/"
     }
 
