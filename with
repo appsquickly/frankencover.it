@@ -10,22 +10,22 @@ import static org.fusesource.jansi.Ansi.Color.YELLOW
 import static org.fusesource.jansi.Ansi.Color.BLACK
 import static org.fusesource.jansi.Ansi.ansi
 
-new FrankenCover(args).doReport()
+new FrankenCliReader(args).execute()
 
-class FrankenCover
+class FrankenCliReader
 {
 
     public String[] args
     public CliBuilder cli
 
-    public FrankenCover(String[] args)
+    public FrankenCliReader(args)
     {
         super()
         this.args = args
         initCli()
     }
 
-    public void doReport()
+    public void execute()
     {
         def opt = cli.parse(args)
         if (!opt) {
@@ -36,8 +36,10 @@ class FrankenCover
         }
 
 
-        String outPutDir = opt.getProperty("o") ? opt.getProperty("o") : "build/reports"
+        String outPutDir = opt.getProperty("o") ?: "build/reports"
         String sourceDir = opt.getProperty("s")
+
+        //Stop some non-source tree symbols leaking into the report
         def reportConfig = new ReportConfig(directory: "${sourceDir}", excludeSymbols: 
             ["main.m", 
             "queue.h",
@@ -61,7 +63,7 @@ class FrankenCover
     private void initCli()
     {
         def usageInstructions = """groovy http://frankencover.it/with -s <sourceDir> <options>\n\n
-        |For instrunctions on configuring Xcode to output coverage data, visit http://frankencover.it\n\n
+        |For instructions on configuring Xcode to output coverage data, visit http://frankencover.it\n\n
         """.stripMargin().stripIndent()
         cli = new CliBuilder(usage: usageInstructions)
         cli.with
@@ -72,10 +74,10 @@ class FrankenCover
                     r(longOpt: 'required-coverage', 'Required line coverage', args: 1, type: String, required: false)
                     a(longOpt: 'appcode', 'Search in AppCode\'s output directory. (default is both Xcode and AppCode\'s output dirs)', args: 0, type: boolean, required: false)
                     x(longOpt: 'xcode', 'Search in Xcode\'s output directory. (default is both Xcode and AppCode\'s output dirs)', args: 0, type: boolean, required: false)
+                    //TODO: Do we need the following opt?
                     //e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: 1, type: String, required: false)
                 }
     }
-
 }
 
 
@@ -94,7 +96,7 @@ class ReportGenerator
     // ================================================================ //
     // Constructors
 
-    ReportGenerator(String outputDir, Double requiredCoverage, ReportConfig reportConfig, IDEConfig ideConfig, AntBuilder ant)
+    ReportGenerator(outputDir, requiredCoverage, reportConfig, ideConfig, ant)
     {
         this.outputDir = outputDir
         this.requiredCoverage = requiredCoverage
@@ -177,12 +179,22 @@ class ReportParser
 
     ReportParser(String summary)
     {
-        parse(summary);
+        boolean linesFound = false
+        summary.eachLine {
+            if (it.contains("lines.....")) {
+                def lineSummaries = it.split("%")
+                lineCoveragePercent = lineSummaries[0].split()[1].toDouble()
+                lineCoverageDetail = lineSummaries[1].trim()
+                linesFound = true
+            }
+        }
+        if (!linesFound) {
+            throw new RuntimeException("Coverage data not found")
+        };
     }
 
     // ================================================================ //
     // Public
-
 
     void print()
     {
@@ -209,25 +221,8 @@ class ReportParser
         print ansi().a("${lineCoverageDetail}")
     }
 
-    // ================================================================ //
-    // Private
 
-    void parse(String summary)
-    {
-        boolean linesFound = false
-        summary.eachLine {
-            if (it.startsWith("  lines......:")) {
-                def lineSummary = it.split("%")
-                lineCoveragePercent = new Double(lineSummary[0].substring(15))
-                lineCoverageDetail = lineSummary[1].trim()
-                linesFound = true
-            }
-        }
-        if (!linesFound) {
-            throw new RuntimeException("Coverage data not found")
-        }
     }
-}
 
 class ReportConfig
 {
@@ -306,7 +301,7 @@ class IDEConfig
         return "~/Library/Developer/Xcode/DerivedData"
     }
 
-    public String appCodeDir()
+    public String appCodeDirOrNull()
     {
         if (cachedAppCodeDir == null) {
             def highestAppCodeInstalled = 0
@@ -331,8 +326,8 @@ class IDEConfig
             searchDirectories.append(xcodeDir())
             searchDirectories.append(" ")
         }
-        if (withAppCodeIfAvailable && appCodeDir() != null) {
-            searchDirectories.append(appCodeDir())
+        if (withAppCodeIfAvailable && appCodeDirOrNull() != null) {
+            searchDirectories.append(appCodeDirOrNull())
         }
         return searchDirectories.toString()
     }
