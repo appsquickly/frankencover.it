@@ -53,6 +53,9 @@ class FrankenCliReader
             ideConfig.withAppCodeIfAvailable = opt.getProperty("a")
             ideConfig.withXcode = opt.getProperty("x")
         }
+        if (opt.getProperty("p")) {
+            ideConfig.customDirectory = opt.getProperty("p")
+        }
 
         Double requiredCoverage = opt.getProperty("r") ? new Double(opt.getProperty("r").replaceAll("%", "")) : 0
         def generator = new ReportGenerator(outPutDir, requiredCoverage, reportConfig, ideConfig, new AntBuilder(), opt.getProperty("d"))
@@ -71,6 +74,7 @@ class FrankenCliReader
                     h(longOpt: 'help', 'Help - Usage Information')
                     s(longOpt: 'source-dir', 'The source directory to generate coverage for', args: 1, type: String, required: true)
                     o(longOpt: 'output-dir', 'The output directory to write coverage report', args: 1, type: String, required: false)
+                    p(longOpt: 'products-dir', 'Use custom directory to search for code coverage files, instead of the IDE default', args: 1, type: String, required: false)
                     r(longOpt: 'required-coverage', 'Required line coverage', args: 1, type: String, required: false)
                     a(longOpt: 'appcode', 'Search in AppCode\'s output directory. (default is both Xcode and AppCode\'s output dirs)', args: 0, type: boolean, required: false)
                     x(longOpt: 'xcode', 'Search in Xcode\'s output directory. (default is both Xcode and AppCode\'s output dirs)', args: 0, type: boolean, required: false)
@@ -306,6 +310,7 @@ class IDEConfig
 
     public boolean withAppCodeIfAvailable
     public boolean withXcode
+    public String customDirectory
 
     def cachedAppCodeDir = null
 
@@ -333,6 +338,18 @@ class IDEConfig
     }
 
     public String searchDirectories()
+    {
+        return customDirectory ? customDirectory : ideDirectories()
+    }
+
+    public void setCustomDirectory(String customDirectory) {
+        println "setting custom dir to " + customDirectory
+        this.customDirectory = customDirectory
+        this.withAppCodeIfAvailable = false
+        this.withXcode = false
+    }
+
+    private String ideDirectories()
     {
         def searchDirectories = new StringBuilder()
         if (withXcode) {
