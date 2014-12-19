@@ -55,7 +55,7 @@ class FrankenCliReader
         }
 
         Double requiredCoverage = opt.getProperty("r") ? new Double(opt.getProperty("r").replaceAll("%", "")) : 0
-        def generator = new ReportGenerator(outPutDir, requiredCoverage, reportConfig, ideConfig, new AntBuilder())
+        def generator = new ReportGenerator(outPutDir, requiredCoverage, reportConfig, ideConfig, new AntBuilder(), opt.getProperty("d"))
         generator.generate()
         System.exit(generator.failed ? -1 : 0)
     }
@@ -74,6 +74,7 @@ class FrankenCliReader
                     r(longOpt: 'required-coverage', 'Required line coverage', args: 1, type: String, required: false)
                     a(longOpt: 'appcode', 'Search in AppCode\'s output directory. (default is both Xcode and AppCode\'s output dirs)', args: 0, type: boolean, required: false)
                     x(longOpt: 'xcode', 'Search in Xcode\'s output directory. (default is both Xcode and AppCode\'s output dirs)', args: 0, type: boolean, required: false)
+                    d(longOpt: 'debug', 'Print debugging output.', type: boolean, required: false)
                     //TODO: Do we need the following opt?
                     //e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: 1, type: String, required: false)
                 }
@@ -89,6 +90,7 @@ class ReportGenerator
     ReportConfig reportConfig
     IDEConfig ideConfig
     AntBuilder ant
+    boolean debug
 
     boolean failed
 
@@ -97,7 +99,7 @@ class ReportGenerator
     // ================================================================ //
     // Constructors
 
-    ReportGenerator(outputDir, requiredCoverage, reportConfig, ideConfig, ant)
+    ReportGenerator(outputDir, requiredCoverage, reportConfig, ideConfig, ant, debug)
     {
         this.outputDir = outputDir
         this.requiredCoverage = requiredCoverage
@@ -135,7 +137,8 @@ class ReportGenerator
             |${genHtmlCmd} -o ${reportLocation.absolutePath} --prefix ${reportConfig.prefix()} ${coverageInfoFile}
             """.stripMargin()
 
-//        println(script)
+
+        if (debug) {println(script)}
 
         Process process = "bash".execute();
         process.outputStream.write(script.getBytes())
