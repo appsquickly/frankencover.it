@@ -107,6 +107,7 @@ class ReportGenerator
         this.ideConfig = ideConfig
         this.ant = ant
         this.reportLocation = new File("${outputDir}/coverage")
+        this.debug = debug
 
         print ansi().a(INTENSITY_BOLD)
         print ansi().fg(YELLOW).a("\n▸ ")
@@ -138,7 +139,9 @@ class ReportGenerator
             """.stripMargin()
 
 
-        if (debug) {println(script)}
+        if (debug) {
+            println(script)
+        }
 
         Process process = "bash".execute();
         process.outputStream.write(script.getBytes())
