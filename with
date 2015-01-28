@@ -143,17 +143,15 @@ class ReportGenerator
             """.stripMargin()
 
 
-        if (debug) {
-            println(script)
-        }
-
+        if (debug) println(script)
+        
         Process process = "bash".execute();
         process.outputStream.write(script.getBytes())
         process.outputStream.close()
         process.waitFor()
 
         printSummary(coverageInfoFile)
-        "rm -fr ${tempDir}".execute().waitFor()
+        if (!debug) "rm -fr ${tempDir}".execute().waitFor()
 
     }
 
