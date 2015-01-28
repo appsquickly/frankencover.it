@@ -2,8 +2,11 @@
 
 Producing a test coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here we've glued them all together into something that (hopefully) just works. 
 
-* Produces an HTML test coverage report with the least possible steps. 
-* Includes a coverage checker. This can be used in CI builds to check minumum test coverage - failing the build if coverage falls below the required amount. 
+* Generates a report with minimal steps.
+* Outputs to the terminal as well as produces a detailed report in build-server friendly HTML format.
+* Includes a coverage checker. This can be used in CI builds to check minimum test coverage - failing the build if coverage falls below the required amount.
+* Free for both commercial and open-source projects.
+
  
 #Installing
 
