@@ -26,7 +26,7 @@ sudo port install groovy
 sudo port install lcov
 ```
 
-###### NB: Xcode 6.x requires lcov 1.11, please ensure that you have this version with `lcov --version`
+*NB:* Xcode 6.x requires lcov 1.11, please ensure that you have this version with `lcov --version`
 
 #Usage
 
