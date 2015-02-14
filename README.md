@@ -26,6 +26,8 @@ sudo port install groovy
 sudo port install lcov
 ```
 
+### NB: Xcode 6.x requires lcov 1.11, please ensure that you have this version with `lcov --version`
+
 #Usage
 
 Set your main App target to produce test coverage output (debug mode only). 
