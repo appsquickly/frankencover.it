@@ -133,14 +133,16 @@ class ReportGenerator
         def script = """\
             |mkdir -p ${escapeSpecialCharacters(collationDir)}
             |mkdir -p ${escapeSpecialCharacters(coverageData)}
+			|mkdir -p ${escapeSpecialCharacters(reportLocation.absolutePath)}/data
             |find ${escapeSpecialCharacters(ideConfig.searchDirectories())} ${reportConfig.dataFileNames()} | rsync --files-from=- / ${escapeSpecialCharacters(collationDir)}
             |find ${escapeSpecialCharacters(collationDir)} -type file -exec cp -fr {} ${escapeSpecialCharacters(coverageData)} \\;
             |rm -fr ${escapeSpecialCharacters(collationDir)}
             |geninfo ${escapeSpecialCharacters(coverageData)}/*.gcno --no-recursion --output-filename ${escapeSpecialCharacters(coverageInfoFile)}.temp
             |lcov -r ${escapeSpecialCharacters(coverageInfoFile)}.temp ${excludeSymbols} > ${escapeSpecialCharacters(coverageInfoFile)}
-            |${genHtmlCmd} -o ${escapeSpecialCharacters(reportLocation.absolutePath)} --prefix ${escapeSpecialCharacters(reportConfig.prefix())} ${escapeSpecialCharacters(coverageInfoFile)}
+            |${genHtmlCmd} -o ${escapeSpecialCharacters(reportLocation.absolutePath)} --prefix ${escapeSpecialCharacters(reportConfig.prefix())} ${escapeSpecialCharacters(coverageInfoFile)}		
+            |cp -R ${escapeSpecialCharacters(tempDir)}/* ${escapeSpecialCharacters(reportLocation.absolutePath)}/data
             """.stripMargin()
-
+        
 		def commands = script.split("\n")
 		
 		for(command in commands)
@@ -160,7 +162,7 @@ class ReportGenerator
 		}
 
         printSummary(coverageInfoFile)
-        if (!debug) "rm -fr ${escapeSpecialCharacters(tempDir)}".execute().waitFor()
+		"rm -fr ${escapeSpecialCharacters(tempDir)}".execute().waitFor()
 
     }
 
@@ -376,8 +378,3 @@ class IDEConfig
     }
 
 }
-
-
-
-
-
