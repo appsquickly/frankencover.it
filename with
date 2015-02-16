@@ -131,24 +131,34 @@ class ReportGenerator
         def excludeSymbols = reportConfig.excludeSymbols.join(" ")
 
         def script = """\
-            |#!/bin/sh
-            |mkdir -p ${collationDir}
-            |mkdir -p ${coverageData}
-            |find ${ideConfig.searchDirectories()} ${reportConfig.dataFileNames()} | rsync --files-from=- / ${collationDir}
-            |find ${collationDir} -type file -exec cp -fr {} ${coverageData} \\;
-            |rm -fr ${collationDir}
-            |geninfo ${coverageData}/*.gcno --no-recursion --output-filename ${coverageInfoFile}.temp
-            |lcov -r ${coverageInfoFile}.temp ${excludeSymbols} > ${coverageInfoFile}
-            |${genHtmlCmd} -o ${reportLocation.absolutePath} --prefix ${reportConfig.prefix()} ${coverageInfoFile}
+            |mkdir -p '${collationDir}'
+            |mkdir -p '${coverageData}'
+            |find '${ideConfig.searchDirectories()}' ${reportConfig.dataFileNames()} | rsync --files-from=- / '${collationDir}'
+            |find '${collationDir}' -type file -exec cp -fr {} '${coverageData}' \\;
+            |rm -fr '${collationDir}'
+            |geninfo '${coverageData}'/*.gcno --no-recursion --output-filename '${coverageInfoFile}.temp'
+            |lcov -r '${coverageInfoFile}.temp' ${excludeSymbols} > '${coverageInfoFile}'
+            |${genHtmlCmd} -o '${reportLocation.absolutePath}' --prefix '${reportConfig.prefix()}' '${coverageInfoFile}'
             """.stripMargin()
-
-
-        if (debug) println(script)
         
-        Process process = "bash".execute();
-        process.outputStream.write(script.getBytes())
-        process.outputStream.close()
-        process.waitFor()
+		def commands = script.split("\n")
+		
+		for(command in commands) {
+	        if (debug) println(command)			
+	        Process process = "bash".execute();
+	        process.outputStream.write(script.getBytes())
+	        process.outputStream.close()
+	        process.waitFor()
+	        if (debug) { 
+				println command
+				println "return code: ${ process.exitValue()}"
+				println "stderr: ${process.err.text}"
+				println "stdout: ${process.in.text}"
+			}
+
+		}
+		
+      
 
         printSummary(coverageInfoFile)
         if (!debug) "rm -fr ${tempDir}".execute().waitFor()
@@ -361,8 +371,3 @@ class IDEConfig
     }
 
 }
-
-
-
-
-
