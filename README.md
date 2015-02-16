@@ -88,6 +88,10 @@ curl -SSL https://frankencover.it/with > FrankenCover && chmod +x FrankenCover
 
 For now, the script, along with documentation is located on the gh-pages branch. 
 
+## A big thank you to the following contributors: 
+
+* <a href="https://github.com/alexargo">Alex Argo</a> : Testing & fixes for directories with unusual characters
+
 # LICENSE
 
 Apache License, Version 2.0, January 2004, http://www.apache.org/licenses/
