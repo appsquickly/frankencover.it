@@ -131,34 +131,43 @@ class ReportGenerator
         def excludeSymbols = reportConfig.excludeSymbols.join(" ")
 
         def script = """\
-            |#!/bin/sh
-            |mkdir -p ${collationDir}
-            |mkdir -p ${coverageData}
-            |find ${ideConfig.searchDirectories()} ${reportConfig.dataFileNames()} | rsync --files-from=- / ${collationDir}
-            |find ${collationDir} -type file -exec cp -fr {} ${coverageData} \\;
-            |rm -fr ${collationDir}
-            |geninfo ${coverageData}/*.gcno --no-recursion --output-filename ${coverageInfoFile}.temp
-            |lcov -r ${coverageInfoFile}.temp ${excludeSymbols} > ${coverageInfoFile}
-            |${genHtmlCmd} -o ${reportLocation.absolutePath} --prefix ${reportConfig.prefix()} ${coverageInfoFile}
+            |mkdir -p ${escapeSpecialCharacters(collationDir)}
+            |mkdir -p ${escapeSpecialCharacters(coverageData)}
+            |find ${escapeSpecialCharacters(ideConfig.searchDirectories())} ${reportConfig.dataFileNames()} | rsync --files-from=- / ${escapeSpecialCharacters(collationDir)}
+            |find ${escapeSpecialCharacters(collationDir)} -type file -exec cp -fr {} ${escapeSpecialCharacters(coverageData)} \\;
+            |rm -fr ${escapeSpecialCharacters(collationDir)}
+            |geninfo ${escapeSpecialCharacters(coverageData)}/*.gcno --no-recursion --output-filename ${escapeSpecialCharacters(coverageInfoFile)}.temp
+            |lcov -r ${escapeSpecialCharacters(coverageInfoFile)}.temp ${excludeSymbols} > ${escapeSpecialCharacters(coverageInfoFile)}
+            |${genHtmlCmd} -o ${escapeSpecialCharacters(reportLocation.absolutePath)} --prefix ${escapeSpecialCharacters(reportConfig.prefix())} ${escapeSpecialCharacters(coverageInfoFile)}
             """.stripMargin()
 
+		def commands = script.split("\n")
+		
+		for(command in commands)
+		{
+	        Process process = "bash".execute();
+	        process.outputStream.write(script.getBytes())
+	        process.outputStream.close()
+	        process.waitFor()
+	        if (debug)
+			{ 
+				println(command)
+			//	println "return code: ${ process.exitValue()}"
+			//	println "stderr: ${process.err.text}"
+			//	println "stdout: ${process.in.text}"
+			}
 
-        if (debug) println(script)
-        
-        Process process = "bash".execute();
-        process.outputStream.write(script.getBytes())
-        process.outputStream.close()
-        process.waitFor()
+		}
 
         printSummary(coverageInfoFile)
-        if (!debug) "rm -fr ${tempDir}".execute().waitFor()
+        if (!debug) "rm -fr ${escapeSpecialCharacters(tempDir)}".execute().waitFor()
 
     }
 
     private void printSummary(coverageInfoFile)
     {
         OutputStream os = new ByteArrayOutputStream()
-        Process summary = "lcov --summary ${coverageInfoFile}".execute()
+        Process summary = "lcov --summary ${escapeSpecialCharacters(coverageInfoFile)}".execute()
         summary.consumeProcessOutput(os, os)
         summary.waitFor()
 
@@ -174,6 +183,12 @@ class ReportGenerator
         print ansi().a("   📊  full report..: ${outputDir}/coverage/index.html")
         print ansi().a("\n\n").reset()
     }
+	
+	private String escapeSpecialCharacters(toEscape) 
+	{
+		String escaped = toEscape.replace("(","\\(");
+		escaped = escaped.replace(")","\\)");		
+	}
 
 
 }
