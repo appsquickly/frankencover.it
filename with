@@ -140,7 +140,7 @@ class ReportGenerator
             |lcov -r ${escapeSpecialCharacters(coverageInfoFile)}.temp ${excludeSymbols} > ${escapeSpecialCharacters(coverageInfoFile)}
             |${genHtmlCmd} -o ${escapeSpecialCharacters(reportLocation.absolutePath)} --prefix ${escapeSpecialCharacters(reportConfig.prefix())} ${escapeSpecialCharacters(coverageInfoFile)}
             """.stripMargin()
-        
+
 		def commands = script.split("\n")
 		
 		for(command in commands)
@@ -158,8 +158,6 @@ class ReportGenerator
 			}
 
 		}
-		
-      
 
         printSummary(coverageInfoFile)
         if (!debug) "rm -fr ${escapeSpecialCharacters(tempDir)}".execute().waitFor()
