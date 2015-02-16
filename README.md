@@ -90,7 +90,7 @@ For now, the script, along with documentation is located on the gh-pages branch.
 
 ## A big thank you to the following contributors: 
 
-* <a href="https://github.com/alexargo">Alex Argo</a> : Testing & fixes for directories with unusual characters
+* <a href="https://github.com/alexargo">Alex Argo</a> : Feedback & fixes for directories with unusual characters
 
 # LICENSE
 
