@@ -58,7 +58,7 @@ class FrankenCliReader
         }
 
         Double requiredCoverage = opt.getProperty("r") ? new Double(opt.getProperty("r").replaceAll("%", "")) : 0
-        def generator = new ReportGenerator(outPutDir, requiredCoverage, reportConfig, ideConfig, new AntBuilder(), opt.getProperty("d"))
+        def generator = new ReportGenerator(outPutDir, requiredCoverage, reportConfig, ideConfig, new AntBuilder(), opt.getProperty("d"),opt.getProperty("n"))
         generator.generate()
         System.exit(generator.failed ? -1 : 0)
     }
@@ -79,6 +79,7 @@ class FrankenCliReader
                     a(longOpt: 'appcode', 'Search in AppCode\'s output directory. (default is both Xcode and AppCode\'s output dirs)', args: 0, type: boolean, required: false)
                     x(longOpt: 'xcode', 'Search in Xcode\'s output directory. (default is both Xcode and AppCode\'s output dirs)', args: 0, type: boolean, required: false)
                     d(longOpt: 'debug', 'Print debugging output.', type: boolean, required: false)
+                    n(longOpt: 'no-html', 'Only output lcov data. No html report', args: 0, type: boolean, required: false)					
                     //TODO: Do we need the following opt?
                     //e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: 1, type: String, required: false)
                 }
@@ -95,7 +96,7 @@ class ReportGenerator
     IDEConfig ideConfig
     AntBuilder ant
     boolean debug
-
+	boolean noHtml
     boolean failed
 
     private File reportLocation
@@ -103,7 +104,7 @@ class ReportGenerator
     // ================================================================ //
     // Constructors
 
-    ReportGenerator(outputDir, requiredCoverage, reportConfig, ideConfig, ant, debug)
+    ReportGenerator(outputDir, requiredCoverage, reportConfig, ideConfig, ant, debug, noHtml)
     {
         this.outputDir = outputDir
         this.requiredCoverage = requiredCoverage
@@ -112,6 +113,7 @@ class ReportGenerator
         this.ant = ant
         this.reportLocation = new File("${outputDir}/coverage")
         this.debug = debug
+		this.noHtml = noHtml
 
         print ansi().a(INTENSITY_BOLD)
         print ansi().fg(YELLOW).a("\n▸ ")
@@ -127,9 +129,14 @@ class ReportGenerator
         def collationDir = "${tempDir}/coverage-data-collate"
         def coverageData = "${tempDir}/coverage-data"
         def coverageInfoFile = "${tempDir}/coverage.info"
-        def genHtmlCmd = "genhtml --no-function-coverage --no-branch-coverage"
+        def genHtmlCmd = "genhtml --no-function-coverage --no-branch-coverage -o ${escapeSpecialCharacters(reportLocation.absolutePath)} --prefix ${escapeSpecialCharacters(reportConfig.prefix())} ${escapeSpecialCharacters(coverageInfoFile)}"
         def excludeSymbols = reportConfig.excludeSymbols.join(" ")
-
+		
+		if(this.noHtml)
+		{
+			genHtmlCmd = ""
+		}
+		
         def script = """\
             |mkdir -p ${escapeSpecialCharacters(collationDir)}
             |mkdir -p ${escapeSpecialCharacters(coverageData)}
@@ -138,31 +145,25 @@ class ReportGenerator
             |find ${escapeSpecialCharacters(collationDir)} -type file -exec cp -fr {} ${escapeSpecialCharacters(coverageData)} \\;
             |rm -fr ${escapeSpecialCharacters(collationDir)}
             |geninfo ${escapeSpecialCharacters(coverageData)}/*.gcno --no-recursion --output-filename ${escapeSpecialCharacters(coverageInfoFile)}.temp
-            |lcov -r ${escapeSpecialCharacters(coverageInfoFile)}.temp ${excludeSymbols} > ${escapeSpecialCharacters(coverageInfoFile)}
-            |${genHtmlCmd} -o ${escapeSpecialCharacters(reportLocation.absolutePath)} --prefix ${escapeSpecialCharacters(reportConfig.prefix())} ${escapeSpecialCharacters(coverageInfoFile)}		
+            |lcov -r ${escapeSpecialCharacters(coverageInfoFile)}.temp ${excludeSymbols} > ${escapeSpecialCharacters(coverageInfoFile)}        
+			|${genHtmlCmd} 		
             |cp -R ${escapeSpecialCharacters(tempDir)}/* ${escapeSpecialCharacters(reportLocation.absolutePath)}/data
-            """.stripMargin()
-        
+            """.stripMargin()		
+		
 		def commands = script.split("\n")
 		
 		for(command in commands)
 		{
+	        if (debug) println(command)
 	        Process process = "bash".execute();
-	        process.outputStream.write(script.getBytes())
+	        process.outputStream.write(command.getBytes())
 	        process.outputStream.close()
 	        process.waitFor()
-	        if (debug)
-			{ 
-				println(command)
-			//	println "return code: ${ process.exitValue()}"
-			//	println "stderr: ${process.err.text}"
-			//	println "stdout: ${process.in.text}"
-			}
-
 		}
 
         printSummary(coverageInfoFile)
-		"rm -fr ${escapeSpecialCharacters(tempDir)}".execute().waitFor()
+		if(!debug)
+			"rm -fr ${escapeSpecialCharacters(tempDir)}".execute().waitFor()
 
     }
 
@@ -182,7 +183,10 @@ class ReportGenerator
             failed = true
         }
         print ansi().a("\n").reset()
-        print ansi().a("   📊  full report..: ${outputDir}/coverage/index.html")
+		if(this.noHtml == false)
+		{
+			print ansi().a("   📊  full report..: ${outputDir}/coverage/index.html")
+		}
         print ansi().a("\n\n").reset()
     }
 	
