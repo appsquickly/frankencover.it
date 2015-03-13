@@ -129,7 +129,7 @@ class ReportGenerator
         def collationDir = "${tempDir}/coverage-data-collate"
         def coverageData = "${tempDir}/coverage-data"
         def coverageInfoFile = "${tempDir}/coverage.info"
-        def genHtmlCmd = "genhtml --no-function-coverage --no-branch-coverage -o ${escapeSpecialCharacters(reportLocation.absolutePath)} --prefix ${escapeSpecialCharacters(reportConfig.prefix())} ${escapeSpecialCharacters(coverageInfoFile)}"
+        def genHtmlCmd = "genhtml -o ${escapeSpecialCharacters(reportLocation.absolutePath)} --prefix ${escapeSpecialCharacters(reportConfig.prefix())} ${escapeSpecialCharacters(coverageInfoFile)}"
         def excludeSymbols = reportConfig.excludeSymbols.join(" ")
 		
 		if(this.noHtml)
