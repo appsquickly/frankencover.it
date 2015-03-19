@@ -91,6 +91,7 @@ frankencover.it is a non-profit, community driven project. We only ask that if y
 ## A big thank you to the following contributors: 
 
 * <a href="https://github.com/alexargo">Alex Argo</a> : Feedback & fixes for directories with unusual characters
+* <a href="https://github.com/hybridcattt">Hybrid Cat</a> : Exclusions, html report configs. 
  
 ## Contributing
 
