@@ -2,6 +2,8 @@
 import groovy.io.FileType
 import org.apache.tools.ant.util.FileUtils
 
+import org.apache.commons.cli.Option
+
 import static org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD
 import static org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD_OFF
 import static org.fusesource.jansi.Ansi.Color.RED
@@ -38,15 +40,10 @@ class FrankenCliReader
 
         String outPutDir = opt.getProperty("o") ?: "build/reports"
         String sourceDir = opt.getProperty("s")
+        List<String> excludedFileNames = opt.es ?: ["main.m","queue.h","once.h","CGGeometry.h","MKGeometry.h","NSRange.h"]
 
         //Stop some non-source tree symbols leaking into the report
-        def reportConfig = new ReportConfig(directory: "${sourceDir}", excludeSymbols:
-                ["main.m",
-                 "queue.h",
-                 "once.h",
-                 "CGGeometry.h",
-                 "MKGeometry.h",
-                 "NSRange.h"])
+        def reportConfig = new ReportConfig(directory: "${sourceDir}", excludeSymbols:excludedFileNames)
 
         def ideConfig = new IDEConfig(withXcode: true, withAppCodeIfAvailable: true)
         if (opt.getProperty("x") || opt.getProperty("a")) {
@@ -80,8 +77,7 @@ class FrankenCliReader
                     x(longOpt: 'xcode', 'Search in Xcode\'s output directory. (default is both Xcode and AppCode\'s output dirs)', args: 0, type: boolean, required: false)
                     d(longOpt: 'debug', 'Print debugging output.', type: boolean, required: false)
                     n(longOpt: 'no-html', 'Only output lcov data. No html report', args: 0, type: boolean, required: false)					
-                    //TODO: Do we need the following opt?
-                    //e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: 1, type: String, required: false)
+                    e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: Option.UNLIMITED_VALUES, valueSeparator: ',', type: String, required: false)
                 }
         return builder
     }
