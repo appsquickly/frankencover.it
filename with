@@ -2,6 +2,8 @@
 import groovy.io.FileType
 import org.apache.tools.ant.util.FileUtils
 
+import org.apache.commons.cli.Option
+
 import static org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD
 import static org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD_OFF
 import static org.fusesource.jansi.Ansi.Color.RED
@@ -38,15 +40,10 @@ class FrankenCliReader
 
         String outPutDir = opt.getProperty("o") ?: "build/reports"
         String sourceDir = opt.getProperty("s")
+        List<String> excludedFileNames = opt.es ?: ["main.m","queue.h","once.h","CGGeometry.h","MKGeometry.h","NSRange.h"]
 
         //Stop some non-source tree symbols leaking into the report
-        def reportConfig = new ReportConfig(directory: "${sourceDir}", excludeSymbols:
-                ["main.m",
-                 "queue.h",
-                 "once.h",
-                 "CGGeometry.h",
-                 "MKGeometry.h",
-                 "NSRange.h"])
+        def reportConfig = new ReportConfig(directory: "${sourceDir}", excludeSymbols:excludedFileNames)
 
         def ideConfig = new IDEConfig(withXcode: true, withAppCodeIfAvailable: true)
         if (opt.getProperty("x") || opt.getProperty("a")) {
@@ -58,7 +55,7 @@ class FrankenCliReader
         }
 
         Double requiredCoverage = opt.getProperty("r") ? new Double(opt.getProperty("r").replaceAll("%", "")) : 0
-        def generator = new ReportGenerator(outPutDir, requiredCoverage, reportConfig, ideConfig, new AntBuilder(), opt.getProperty("d"))
+        def generator = new ReportGenerator(outPutDir, requiredCoverage, reportConfig, ideConfig, new AntBuilder(), opt.getProperty("d"),opt.getProperty("n"))
         generator.generate()
         System.exit(generator.failed ? -1 : 0)
     }
@@ -79,8 +76,8 @@ class FrankenCliReader
                     a(longOpt: 'appcode', 'Search in AppCode\'s output directory. (default is both Xcode and AppCode\'s output dirs)', args: 0, type: boolean, required: false)
                     x(longOpt: 'xcode', 'Search in Xcode\'s output directory. (default is both Xcode and AppCode\'s output dirs)', args: 0, type: boolean, required: false)
                     d(longOpt: 'debug', 'Print debugging output.', type: boolean, required: false)
-                    //TODO: Do we need the following opt?
-                    //e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: 1, type: String, required: false)
+                    n(longOpt: 'no-html', 'Only output lcov data. No html report', args: 0, type: boolean, required: false)					
+                    e(longOpt: 'exclude', 'Comma separated list of symbols to exclude from report', args: Option.UNLIMITED_VALUES, valueSeparator: ',', type: String, required: false)
                 }
         return builder
     }
@@ -95,7 +92,7 @@ class ReportGenerator
     IDEConfig ideConfig
     AntBuilder ant
     boolean debug
-
+	boolean noHtml
     boolean failed
 
     private File reportLocation
@@ -103,7 +100,7 @@ class ReportGenerator
     // ================================================================ //
     // Constructors
 
-    ReportGenerator(outputDir, requiredCoverage, reportConfig, ideConfig, ant, debug)
+    ReportGenerator(outputDir, requiredCoverage, reportConfig, ideConfig, ant, debug, noHtml)
     {
         this.outputDir = outputDir
         this.requiredCoverage = requiredCoverage
@@ -112,6 +109,7 @@ class ReportGenerator
         this.ant = ant
         this.reportLocation = new File("${outputDir}/coverage")
         this.debug = debug
+		this.noHtml = noHtml
 
         print ansi().a(INTENSITY_BOLD)
         print ansi().fg(YELLOW).a("\n▸ ")
@@ -127,38 +125,48 @@ class ReportGenerator
         def collationDir = "${tempDir}/coverage-data-collate"
         def coverageData = "${tempDir}/coverage-data"
         def coverageInfoFile = "${tempDir}/coverage.info"
-        def genHtmlCmd = "genhtml --no-function-coverage --no-branch-coverage"
+        def genHtmlCmd = "genhtml -o ${escapeSpecialCharacters(reportLocation.absolutePath)} --prefix ${escapeSpecialCharacters(reportConfig.prefix())} ${escapeSpecialCharacters(coverageInfoFile)}"
         def excludeSymbols = reportConfig.excludeSymbols.join(" ")
-
+		
+		if(this.noHtml)
+		{
+			genHtmlCmd = ""
+		}
+		
         def script = """\
-            |#!/bin/sh
-            |mkdir -p ${collationDir}
-            |mkdir -p ${coverageData}
-            |find ${ideConfig.searchDirectories()} ${reportConfig.dataFileNames()} | rsync --files-from=- / ${collationDir}
-            |find ${collationDir} -type file -exec cp -fr {} ${coverageData} \\;
-            |rm -fr ${collationDir}
-            |geninfo ${coverageData}/*.gcno --no-recursion --output-filename ${coverageInfoFile}.temp
-            |lcov -r ${coverageInfoFile}.temp ${excludeSymbols} > ${coverageInfoFile}
-            |${genHtmlCmd} -o ${reportLocation.absolutePath} --prefix ${reportConfig.prefix()} ${coverageInfoFile}
-            """.stripMargin()
-
-
-        if (debug) println(script)
-        
-        Process process = "bash".execute();
-        process.outputStream.write(script.getBytes())
-        process.outputStream.close()
-        process.waitFor()
+            |mkdir -p ${escapeSpecialCharacters(collationDir)}
+            |mkdir -p ${escapeSpecialCharacters(coverageData)}
+			|mkdir -p ${escapeSpecialCharacters(reportLocation.absolutePath)}/data
+            |find ${escapeSpecialCharacters(ideConfig.searchDirectories())} ${reportConfig.dataFileNames()} | rsync --files-from=- / ${escapeSpecialCharacters(collationDir)}
+            |find ${escapeSpecialCharacters(collationDir)} -type file -exec cp -fr {} ${escapeSpecialCharacters(coverageData)} \\;
+            |rm -fr ${escapeSpecialCharacters(collationDir)}
+            |geninfo ${escapeSpecialCharacters(coverageData)}/*.gcno --no-recursion --output-filename ${escapeSpecialCharacters(coverageInfoFile)}.temp
+            |lcov -r ${escapeSpecialCharacters(coverageInfoFile)}.temp ${excludeSymbols} > ${escapeSpecialCharacters(coverageInfoFile)}        
+			|${genHtmlCmd} 		
+            |cp -R ${escapeSpecialCharacters(tempDir)}/* ${escapeSpecialCharacters(reportLocation.absolutePath)}/data
+            """.stripMargin()		
+		
+		def commands = script.split("\n")
+		
+		for(command in commands)
+		{
+	        if (debug) println(command)
+	        Process process = "bash".execute();
+	        process.outputStream.write(command.getBytes())
+	        process.outputStream.close()
+	        process.waitFor()
+		}
 
         printSummary(coverageInfoFile)
-        if (!debug) "rm -fr ${tempDir}".execute().waitFor()
+		if(!debug)
+			"rm -fr ${escapeSpecialCharacters(tempDir)}".execute().waitFor()
 
     }
 
     private void printSummary(coverageInfoFile)
     {
         OutputStream os = new ByteArrayOutputStream()
-        Process summary = "lcov --summary ${coverageInfoFile}".execute()
+        Process summary = "lcov --summary ${escapeSpecialCharacters(coverageInfoFile)}".execute()
         summary.consumeProcessOutput(os, os)
         summary.waitFor()
 
@@ -171,9 +179,18 @@ class ReportGenerator
             failed = true
         }
         print ansi().a("\n").reset()
-        print ansi().a("   📊  full report..: ${outputDir}/coverage/index.html")
+		if(this.noHtml == false)
+		{
+			print ansi().a("   📊  full report..: ${outputDir}/coverage/index.html")
+		}
         print ansi().a("\n\n").reset()
     }
+	
+	private String escapeSpecialCharacters(toEscape) 
+	{
+		String escaped = toEscape.replace("(","\\(");
+		escaped = escaped.replace(")","\\)");		
+	}
 
 
 }
@@ -361,8 +378,3 @@ class IDEConfig
     }
 
 }
-
-
-
-
-
