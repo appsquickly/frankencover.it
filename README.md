@@ -84,6 +84,11 @@ If you don't want to run the hosted script, it can be installed locally with:
 curl -SSL https://frankencover.it/with > FrankenCover && chmod +x FrankenCover
 ```
 
+
+# Swift Code Coverage
+
+At the present time Swift Code coverage because the compiler currently ignores instructions to instrument the codebase. Please vote for this OpenRadar issue.
+
 # Like this project? 
 
 frankencover.it is a non-profit, community driven project. We only ask that if you've found it useful to star us on Github or send a tweet mentioning us (<a href="https://twitter.com/appsquickly">@appsquickly</a>). frankencover.it is sponsored and lead by <a href="http://appsquick.ly">appsquick.ly</a>, with contributions from around the world. 
