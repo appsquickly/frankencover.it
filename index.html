@@ -20,8 +20,8 @@
 <body>
 
 <!--<a href="https://github.com/appsquickly/frankencover.it"><img style="position: absolute; top: 0; right: 0; border: 0;"-->
-                                                            <!--src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"-->
-                                                            <!--alt="Fork me on GitHub"></a>-->
+<!--src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"-->
+<!--alt="Fork me on GitHub"></a>-->
 
 <div id="header">
     <nav>
@@ -41,7 +41,8 @@
             <span class="credits right">A project by <a href="http://appsquick.ly">AppsQuickly</a></span>
         </div>
 
-        <p>Generating a code coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here we've
+        <p>Generating a code coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here
+            we've
             glued them all together into something that (hopefully) just works.</p>
 
         <ul style="padding-bottom: 40px">
@@ -61,19 +62,20 @@
             <h4>With Homebrew</h4>
 
 <pre><code>$ brew install groovy
-$ brew install lcov
+    $ brew install lcov
 </code></pre>
 
             <h4>With MacPorts</h4>
 
 <pre><code>$ sudo port install groovy
-$ sudo port install lcov
+    $ sudo port install lcov
 </code></pre>
 
             <br/>
 
-            <p style="color: #E44D26"><strong>NB:</strong> Xcode 6.x requires lcov 1.11, or no coverage will be produced. If you haven't updated your Brew or MacPorts sources for a while, please do so or you might end up with lcov 1.10.</p>
-
+            <p style="color: #E44D26"><strong>NB:</strong> Xcode 6.x requires lcov 1.11, or no coverage will be
+                produced. If you haven't updated your Brew or MacPorts sources for a while, please do so or you might
+                end up with lcov 1.10.</p>
 
 
         </div>
@@ -99,16 +101,16 @@ $ sudo port install lcov
 
             <p>Create a build script, as follows: </p>
         <pre><code>#!/bin/sh
-# First Run Tests
-xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configuration Debug \
--destination 'platform=iOS Simulator,name=iPhone 5s,OS=8.1' | xcpretty -c --report junit
+            # First Run Tests
+            xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configuration Debug \
+            -destination 'platform=iOS Simulator,name=iPhone 5s,OS=8.1' | xcpretty -c --report junit
 
-#Above we're piping output through xcpretty, which is not required but very nice!
-#(gem install xcpretty)
+            #Above we're piping output through xcpretty, which is not required but very nice!
+            #(gem install xcpretty)
 
-# Now Produce Test Coverage Report
-groovy http://frankencover.it/with -source-dir MyProject/Classes -required-coverage 85
-#We set required coverage to 85% - build fails if coverage falls below this value.
+            # Now Produce Test Coverage Report
+            groovy http://frankencover.it/with -source-dir MyProject/Classes -required-coverage 85
+            #We set required coverage to 85% - build fails if coverage falls below this value.
         </code></pre>
 
             <p>. . . and run it with</p>
@@ -132,23 +134,43 @@ groovy http://frankencover.it/with -source-dir MyProject/Classes -required-cover
 
         <div style="padding-top: 50px">
             <h2>INSTALLING LOCALLY</h2>
-            <p>Using the hosted script has an advantage in that it alleviates the need to update for new features or bug fixes, however if
+
+            <p>Using the hosted script has an advantage in that it alleviates the need to update for new features or bug
+                fixes, however if
                 you prefer not to run a remote script, it can be installed locally with:</p>
 
-            <pre><code>curl -SSL http://frankencover.it/with > FrankenCliReader && chmod +x FrankenCliReader</code></pre>
+            <pre><code>curl -SSL http://frankencover.it/with > FrankenCliReader && chmod +x
+                FrankenCliReader</code></pre>
 
             <p>Alternatively, to review the contents of the script prior to execution, use: </p>
             <pre><code>curl -SSL http://frankencover.it/with | more</code></pre>
 
         </div>
 
-        <div style="padding-top: 50px">
+        <div style="padding-top: 3em">
             <h1>SWIFT CODE COVERAGE</h1>
 
-            <p>At the present time Swift Code coverage because the compiler currently ignores instructions to instrument the codebase. Please vote for <a href="https://openradar.appspot.com/radar?id=6457429508227072">this</a> OpenRadar issue.</p>
+            <p>At the present time Swift Code coverage because the compiler currently ignores instructions to instrument
+                the codebase. Please vote for <a href="https://openradar.appspot.com/radar?id=6457429508227072">this</a>
+                OpenRadar issue.</p>
         </div>
 
-        <div style="padding-top: 50px">
+
+        <div style="padding-top: 3em;">
+            <h1>ATTRIBUTION</h1>
+
+            <p>The frankencover.it script just moves a bunch of files into the right place and runs some commands on them,
+                hopefully
+                saving you the time of having to read the detailed documentation and run manual steps. The real
+                heavy-lifting is being done by the awesomeness of <a href="http://clang.llvm.org/">clang</a> and
+                <a href="http://ltp.sourceforge.net/coverage/lcov.php">lcov</a>.</p>
+
+        <span class="template-credit">This site is hosted on GitHub pages, and the web template was kindly provided by <a
+                href="https://twitter.com/michigangraham">mattgraham</a>. 
+        </span>
+        </div>
+
+        <div style="padding-top: 6em">
             <h1>LICENSE</h1>
 
             <p>Apache License, Version 2.0, January 2004, http://www.apache.org/licenses/</p>
@@ -158,10 +180,17 @@ groovy http://frankencover.it/with -source-dir MyProject/Classes -required-cover
         <!--[if !IE]>
         <script>fixScale(document);</script><![endif]-->
         <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                        m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
             ga('create', 'UA-57638059-1', 'auto');
             ga('send', 'pageview');
@@ -170,16 +199,6 @@ groovy http://frankencover.it/with -source-dir MyProject/Classes -required-cover
 
     </section>
 
-    <div>
-        <h1>ATTRIBUTION</h1>
-
-        <p>The frankencover.it script just moves a bunch of files into the right place and runs some commands on them, hopefully
-            saving you the time of having to read the detailed documentation and run manual steps. The real
-            heavy-lifting is being done by the awesomeness of <a href="http://clang.llvm.org/">clang</a> and
-            <a href="http://ltp.sourceforge.net/coverage/lcov.php">lcov</a>.</p>
-
-        <span class="template-credit">This site is hosted on GitHub pages.</span>
-    </div>
 
 
 
