@@ -62,13 +62,13 @@
             <h4>With Homebrew</h4>
 
 <pre><code>$ brew install groovy
-    $ brew install lcov
+$ brew install lcov
 </code></pre>
 
             <h4>With MacPorts</h4>
 
 <pre><code>$ sudo port install groovy
-    $ sudo port install lcov
+$ sudo port install lcov
 </code></pre>
 
             <br/>
@@ -101,16 +101,16 @@
 
             <p>Create a build script, as follows: </p>
         <pre><code>#!/bin/sh
-            # First Run Tests
-            xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configuration Debug \
-            -destination 'platform=iOS Simulator,name=iPhone 5s,OS=8.1' | xcpretty -c --report junit
+# First Run Tests
+xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configuration Debug \
+-destination 'platform=iOS Simulator,name=iPhone 5s,OS=8.1' | xcpretty -c --report junit
 
-            #Above we're piping output through xcpretty, which is not required but very nice!
-            #(gem install xcpretty)
+#Above we're piping output through xcpretty, which is not required but very nice!
+#(gem install xcpretty)
 
-            # Now Produce Test Coverage Report
-            groovy http://frankencover.it/with -source-dir MyProject/Classes -required-coverage 85
-            #We set required coverage to 85% - build fails if coverage falls below this value.
+# Now Produce Test Coverage Report
+groovy http://frankencover.it/with -source-dir MyProject/Classes -required-coverage 85
+#We set required coverage to 85% - build fails if coverage falls below this value.
         </code></pre>
 
             <p>. . . and run it with</p>
@@ -139,8 +139,7 @@
                 fixes, however if
                 you prefer not to run a remote script, it can be installed locally with:</p>
 
-            <pre><code>curl -SSL http://frankencover.it/with > FrankenCliReader && chmod +x
-                FrankenCliReader</code></pre>
+            <pre><code>curl -SSL http://frankencover.it/with > frankencover && chmod +x frankencover</code></pre>
 
             <p>Alternatively, to review the contents of the script prior to execution, use: </p>
             <pre><code>curl -SSL http://frankencover.it/with | more</code></pre>
@@ -166,7 +165,7 @@
                 <a href="http://ltp.sourceforge.net/coverage/lcov.php">lcov</a>.</p>
 
         <span class="template-credit">This site is hosted on GitHub pages, and the web template was kindly provided by <a
-                href="https://twitter.com/michigangraham">mattgraham</a>. 
+                href="https://twitter.com/michigangraham">mattgraham</a>.
         </span>
         </div>
 
