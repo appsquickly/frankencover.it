@@ -725,12 +725,12 @@ dt {
 #header nav li a {
     color: white;
     border: 1px solid #E44D26;
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #E44D26), color-stop(100%, #E44D26));
-    background: -webkit-linear-gradient(#E44D26, #E44D26);
-    background: -moz-linear-gradient(#E44D26, #E44D26);
-    background: -o-linear-gradient(#E44D26, #E44D26);
-    background: -ms-linear-gradient(#E44D26, #E44D26);
-    background: linear-gradient(#E44D26, #E44D26);
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #E44D26), color-stop(100%, #EA7153));
+    background: -webkit-linear-gradient(#E44D26, #EA7153);
+    background: -moz-linear-gradient(#E44D26, #EA7153);
+    background: -o-linear-gradient(#E44D26, #EA7153);
+    background: -ms-linear-gradient(#E44D26, #EA7153);
+    background: linear-gradient(#E44D26, #EA7153);
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     -o-border-radius: 2px;
