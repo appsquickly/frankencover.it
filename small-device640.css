@@ -87,7 +87,10 @@ nav li:last-child{
 #gallery{
 	display:none;
 } 
-#circle-print{
+#console-label {
+	display:none;
+}
+#html-label {
 	display:none;
 }
 #about article{

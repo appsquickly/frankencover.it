@@ -154,7 +154,7 @@ ul {
 /* ------------------------------------------------------------------------------------
 --  SCROLLS
 ------------------------------------------------------------------------------------ */
-#datescroll, #programscroll, #usagescroll, #outscroll, #contactscroll{
+#datescroll, #programscroll, #usagescroll, #outscroll, #reportscroll, #contactscroll{
 	float:left;
 	width:100%;
 	margin-top:-4%;
@@ -595,7 +595,7 @@ pre code {
 }
 
 /* ------------------------------------------------------------------------------------
---  USAGE
+--  OUTPUT
 ------------------------------------------------------------------------------------ */
 
 #output {
@@ -611,6 +611,54 @@ pre code {
     margin-bottom:30px;
     text-align:left;
     font-size:1.15em;
+}
+
+#report {
+	float:left;
+	clear:both;
+}
+#report article{
+	float:left;
+	width:75%;
+	margin:0 12.5%;
+}
+#report article p{
+	margin-bottom:30px;
+	text-align:left;
+	font-size:1.15em;
+}
+
+/* ------------------------------------------------------------------------------------
+--  GALLERY
+------------------------------------------------------------------------------------ */
+
+#gallery{
+	float:left;
+	width:80%;
+	margin-right:2%;
+	position:relative;
+}
+
+#console-label {
+	width:120px;
+	height:120px;
+	border-radius:60px;
+	box-shadow:0 2px 100px #000;
+	background:#b93f04;
+	position:absolute;
+	top:44%;
+	right:20%;
+}
+
+#html-label {
+	width:120px;
+	height:120px;
+	border-radius:60px;
+	box-shadow:0 2px 100px #000;
+	background:#b93f04;
+	position:absolute;
+	top:40%;
+	right:20%;
 }
 
 /* ------------------------------------------------------------------------------------
@@ -955,35 +1003,6 @@ form button#buttonsubmit:hover{
 	font-size:1.15em;
 	border-left:none;
 }
-/* ------------------------------------------------------------------------------------
---  BLOCK6 COME
------------------------------------------------------------------------------------- */
-/* ------------------------------------------------------------------------------------
---  BLOCK6 COME: LEFT SIDE
------------------------------------------------------------------------------------- */
-#gallery{
-	float:left;
-	width:48%;
-	margin-right:2%;
-	position:relative;	
-} 
-#circle-print{
-	width:120px;
-	height:120px;
-	border-radius:60px;
-	box-shadow:0 2px 100px #000;
-	background:#b93f04;
-	position:absolute;
-	top:44%;
-	right:-4%;
-}
-#gallery figure{
-	width:88%;
-	padding:6%;
-	background:#111;
-	box-shadow:0 2px 100px #000;
-}
-
 
 .social{
 	float:right;
