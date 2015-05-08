@@ -1,217 +1,447 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>frankencover.it by AppsQuickly</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
+    <meta charset="utf-8"/>
+    <meta name="description" content="place your well-thought description here. It is important!"/>
+    <meta name="author" content="Virtuti-Design"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+    <!-- defines the width of the page as no wider than the width of the viewport -->
+
+    <link href="styles.css" rel="stylesheet"/>
+    <link href='http://fonts.googleapis.com/css?family=Caudex' rel='stylesheet'/>
+    <link href='http://fonts.googleapis.com/css?family=Varela' rel='stylesheet'/>
+    <link href='http://fonts.googleapis.com/css?family=UnifrakturMaguntia' rel='stylesheet'/>
+
+    <link href='small-device1024.css'
+          media='only screen and (max-width: 1024px), only screen and (max-device-width: 1024px)' rel='stylesheet'/>
+    <link href='small-device640.css'
+          media='only screen and (max-width: 640px), only screen and (max-device-width:640px)' rel='stylesheet'/>
+
     <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
     <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <link href='ie.css' rel='stylesheet'/><![endif]-->
 
-    <!-- Google Web Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic' rel='stylesheet'
-          type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic&subset=latin,cyrillic-ext,greek-ext,greek,latin-ext'
-          rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Gentium+Book+Basic:400,400italic,700,700italic&subset=latin,latin-ext'
-          rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic'
-          rel='stylesheet' type='text/css'>
 
+    <link rel="icon" href="favicon.png"/>
+    <title>frankencover.it - code coverage for iOS and OSX.</title>
 
 </head>
-<body>
 
-<!--<a href="https://github.com/appsquickly/frankencover.it"><img style="position: absolute; top: 0; right: 0; border: 0;"-->
-<!--src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"-->
-<!--alt="Fork me on GitHub"></a>-->
 
-<div id="header">
-    <nav>
-        <li class="downloads"><a href="https://github.com/appsquickly/frankencover.it">View On GitHub</a></li>
-    </nav>
-</div>
-<!-- end header -->
+<body onload="initialize()">
 
-<div class="wrapper">
+<!--HEADER-->
+<div class="wrapper fixed">
+    <header>
+        <span id="forkongithub"><a href="https://github.com/appsquickly/frankencover.it">Fork me on
+            GitHub</a></span>
 
-    <section>
-        <div id="title">
-            <h1>frankencover.it</h1>
 
-            <p><a href="http://en.wikipedia.org/wiki/Code_coverage">Code coverage</a> for iOS and OSX. </p>
-            <hr>
-            <span class="credits right">A project by <a href="http://appsquick.ly">AppsQuickly</a></span>
+        <div id="logo">
+            <h1><span class="fractur"><a class="scroll" href="#scrolltop">AppsQuickly </a></span> present . . . </h1>
         </div>
+        <!--logo-->
+        <nav>
+            <ul>
+                <li><a class="scroll" href="#aboutscroll">about</a></li>
+                <li><a class="scroll" href="#installingscroll">installing</a></li>
+                <li><a class="scroll" href="#usagescroll">usage</a></li>
+                <li><a class="scroll" href="#outscroll">output</a></li>
+                <li><a class="scroll" href="#contactscroll">contact</a></li>
+            </ul>
+        </nav>
+    </header>
+</div>
+<!--wrapper-->
 
-        <p>Generating a code coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here
-            we've
-            glued them all together into something that (hopefully) just works.</p>
+<!--BLOCK1-->
+<div class="wrapper" id="scrolltop">
+    <div class="info">
+        <div class="circles">
+            <div class="circle-wrap first">
+                <div class="trans">
+                    <div class="circle circle1">
+                        about
+                    </div>
+                    <!--circle1-->
+                    <div class="details details1">
+                        <a class="scroll a1" href="#aboutscroll"></a>
+                    </div>
+                    <!--details-->
+                </div>
+                <!--trans-->
+            </div>
+            <!--circle-wrap first-->
 
-        <ul style="padding-bottom: 40px">
-            <li>Generates a report with minimal steps.</li>
-            <li>Outputs to the terminal as well as produces a detailed report in build-server friendly HTML format.</li>
-            <li>Includes a coverage checker. This can be used in CI builds to check minimum test coverage - failing the
-                build if coverage falls below the required amount.
-            </li>
-            <li>Free for both commercial and open-source projects.</li>
-        </ul>
 
-        <div id="installing>" class="padding-top">
-            <h2>INSTALLING</h2>
+            <div class="circle-wrap second">
+                <div class="trans">
+                    <div class="circle circle2">
+                        installing
+                    </div>
+                    <!--circle2-->
+                    <div class="details details2">
+                        <a class="scroll a2" href="#installingscroll"></a>
+                    </div>
+                    <!--details-->
+                </div>
+                <!--trans-->
+            </div>
+            <!--circle-wrap second-->
 
-            <p>The script itself can be run remotely, but we'll first need to install dependencies . . .</p>
+            <div class="circle-wrap third">
+                <div class="trans">
+                    <div class="circle circle3">
+                        usage
+                    </div>
+                    <!--circle3-->
+                    <div class="details details3">
+                        <a class="scroll a3" href="#usagescroll"></a>
+                    </div>
+                    <!--details-->
+                </div>
+                <!--trans-->
+            </div>
+            <!--circle-wrap third-->
 
-            <h4>With Homebrew</h4>
+            <div class="circle-wrap fourth">
+                <div class="trans">
+                    <div class="circle circle4">
+                        output
+                    </div>
+                    <!--circle4-->
+                    <div class="details details4">
+                        <a class="scroll a4" href="#outscroll"></a>
+                    </div>
+                    <!--details-->
+                </div>
+                <!--trans-->
+            </div>
+            <!--circle-wrap fourth-->
+
+        </div>
+        <!--circles-->
+    </div>
+    <!--info-->
+
+    <div class="left">
+
+        <hgroup>
+            <h1><span class="colour">frankencover.it</span></h1>
+
+            <h2>Code Coverage for iOS and OSX</h2>
+
+            <h3>Free for both <span class="colour">commercial</span> and
+                <span class="colour">open-source</span>
+                projects!</h3>
+        </hgroup>
+    </div>
+    <!--left-->
+
+    <div class="right">
+        <img src="images/main.jpg" alt=""/>
+    </div>
+    <!--right-->
+</div>
+<!--wrapper-->
+
+
+<!--BLOCK2-->
+<div class="wrapper border2 tsr">
+    <div class="bg">
+        <div id="aboutscroll"></div>
+        <div id="about" class="strip">
+            <article>
+                <h1>About</h1>
+
+                <p>Generating a code coverage report for iOS and OSX projects requires a mish-mash of tools and steps.
+                    Here
+                    we've glued them all together into something that (hopefully) just works.</p>
+
+                <ul style="padding-top: 5em; padding-bottom: 10em;">
+                    <li>Generates a report with minimal steps.</li>
+                    <li>Outputs to the terminal as well as produces a detailed report in build-server friendly HTML
+                        format.
+                    </li>
+                    <li>Includes a coverage checker. This can be used in CI builds to check minimum test coverage -
+                        failing the
+                        build if coverage falls below the required amount.
+                    </li>
+                    <li>Free for both commercial and open-source projects!</li>
+                </ul>
+
+            </article>
+        </div>
+        <!--About-->
+    </div>
+    <!--bg-->
+</div>
+<!--wrapper-->
+
+
+<!--BLOCK4-->
+<div class="wrapper border2 tsr">
+    <div class="bg">
+        <div id="installingscroll"></div>
+        <div id="installing" class="strip">
+            <article>
+            <h1>Installing</h1>
+
+
+                <p>The script itself can be run remotely, but we'll first need to install dependencies . . .</p>
+
+                <div style="padding-top: 5em;">
+                    <h2 >With HomeBrew</h2>
 
 <pre><code>$ brew install groovy
 $ brew install lcov
 </code></pre>
+                </div>
 
-            <h4>With MacPorts</h4>
+                <div style="padding-top: 5em;">
+                    <h2 >With MacPorts</h2>
 
 <pre><code>$ sudo port install groovy
 $ sudo port install lcov
 </code></pre>
+                </div>
 
-            <br/>
+        <p style="padding-top: 5em;">
+                <strong>NB:</strong> Xcode 6.x requires lcov 1.11, or no coverage will be
+                    produced. If you haven't updated your Brew or MacPorts sources for a while, please do so or you might
+                    end up with lcov 1.10.
+        </p>
 
-            <p style="color: #E44D26"><strong>NB:</strong> Xcode 6.x requires lcov 1.11, or no coverage will be
-                produced. If you haven't updated your Brew or MacPorts sources for a while, please do so or you might
-                end up with lcov 1.10.</p>
 
 
+
+            </article>
         </div>
+        <!--program-->
+    </div>
+    <!--bg-->
+</div>
+<!--wrapper-->
 
-        <div id="usage" class="padding-top">
-            <h2>USAGE</h2>
 
-            <p>Set your main App target to produce test coverage output (debug mode only).</p>
-            <img src="images/Coverage.png"/>
-            <br/><br/>
+<!--BLOCK5-->
+<div class="wrapper border2 tsr">
+    <div class="bg">
+        <div id="usagescroll"></div>
+        <div id="usage" class="strip">
+            <article>
+            <h1>USAGE</h1>
 
-            <p>Set your main App target to instrument program flow (debug mode only).</p>
-            <img src="images/Instrument.png"/>
-            <br/><br/>
+                <div style="padding-bottom: 10em;">
+                <p>Set your main App target to produce test coverage output (debug mode only).
+                <img style="display: block; width: 100%" src="images/Coverage.png"/>
+                </p>
+                </div>
 
-            <h3 class="padding-top">FROM YOUR IDE</h3>
+                <div style="padding-bottom: 10em;">
+                <p>Set your main App target to instrument program flow (debug mode only).
+                <img style="display: block; width: 100%" src="images/Instrument.png"/></p>
+                </div>
 
-            <p>Run your tests from Xcode or AppCode, and then produce a coverage report with:</p>
+
+                <div style="padding-top: 5em;">
+                    <h2 class="padding-top">FROM YOUR IDE</h2>
+
+                    <p>Run your tests from Xcode or AppCode, and then produce a coverage report with:</p>
 <pre><code>groovy http://frankencover.it/with -source-dir MyProject/Classes
 </code></pre>
 
-            <h3 class="padding-top">FROM A BUILD SERVER OR LOCAL CMD-LINE</h3>
+                </div>
 
-            <p>Create a build script, as follows: </p>
-        <pre><code>#!/bin/sh
+            <div style="padding-top: 5em;">
+                <h2 class="padding-top">FROM A BUILD SERVER OR LOCAL CMD-LINE</h2>
+
+                <p>Create a build script, as follows: </p>
+<pre><code>#!/bin/sh
 # First Run Tests
-xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configuration Debug \
--destination 'platform=iOS Simulator,name=iPhone 5s,OS=8.1' | xcpretty -c --report junit
+xcodebuild test -workspace MyProject.xcworkspace/ \
+-scheme 'MyProject' \
+-configuration Debug \
+-destination 'platform=iOS Simulator,name=iPhone 5s,OS=8.1' | xcpretty -c
 
-#Above we're piping output through xcpretty, which is not required but very nice!
-#(gem install xcpretty)
+#Above we're piping output through xcpretty, which is not required
+#but very nice! (gem install xcpretty)
 
 # Now Produce Test Coverage Report
-groovy http://frankencover.it/with -source-dir MyProject/Classes -required-coverage 85
-#We set required coverage to 85% - build fails if coverage falls below this value.
-        </code></pre>
+groovy http://frankencover.it/with -source-dir MyProject/Classes \
+-required-coverage 85
 
-            <p>. . . and run it with</p>
-            <pre><code>$ sh build.sh</code></pre>
+#We set required coverage to 85% - build fails if coverage
+#falls below this value.
+</code></pre>
+
+                <p style="padding-top: 40px;">. . . and run it with</p>
+                <pre><code>$ sh build.sh</code></pre>
+
+            </div>
+
 
         </div>
 
 
-        <div id="output" class="padding-top">
-            <h2>OUTPUT</h2>
 
-            <h3 style="padding-top: 20px">Terminal</h3>
-            <img src="images/output.png"/>
-            <br/><br/>
 
-            <h3>Browser</h3>
 
-            <p>Reports are located at ${outputDir}/coverage/index.html</p>
-            <img src="images/report.png"/>
+
+            <!--<div class="right-order">-->
+                <!--<article>-->
+                    <!--<h2>Information</h2>-->
+
+                    <!--<p>Donec semper quam scelerisque tortor dictum gravida. In hac habitasse platea dictumst.-->
+                        <!--Nam pulvinar, odio sed rhoncus suscipit, sem diam ultrices mauris, eu consequat purus metus eu-->
+                        <!--velit.-->
+                        <!--Nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi-->
+                        <!--enim ad minim veniam, quis nostrud exer citation ullam corper suscipit lobortis nisl ut aliquip-->
+                        <!--ex commodo.-->
+                        <!--Typi non habent claritatem insitam est usus legentis in iis qui facit eorum.</p>-->
+
+                    <!--<p>Entrance fee: &euro;16</p>-->
+                <!--</article>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;right-order&ndash;&gt;-->
+                </article>
         </div>
-
-        <div style="padding-top: 50px">
-            <h2>INSTALLING LOCALLY</h2>
-
-            <p>Using the hosted script has an advantage in that it alleviates the need to update for new features or bug
-                fixes, however if
-                you prefer not to run a remote script, it can be installed locally with:</p>
-
-            <pre><code>curl -SSL http://frankencover.it/with > frankencover && chmod +x frankencover</code></pre>
-
-            <p>Alternatively, to review the contents of the script prior to execution, use: </p>
-            <pre><code>curl -SSL http://frankencover.it/with | more</code></pre>
-
-        </div>
-
-        <div style="padding-top: 3em">
-            <h1>SWIFT CODE COVERAGE</h1>
-
-            <p>At the present time Swift Code coverage because the compiler currently ignores instructions to instrument
-                the codebase. Please vote for <a href="https://openradar.appspot.com/radar?id=6457429508227072">this</a>
-                OpenRadar issue.</p>
-        </div>
-
-
-        <div style="padding-top: 3em;">
-            <h1>ATTRIBUTION</h1>
-
-            <p>The frankencover.it script just moves a bunch of files into the right place and runs some commands on them,
-                hopefully
-                saving you the time of having to read the detailed documentation and run manual steps. The real
-                heavy-lifting is being done by the awesomeness of <a href="http://clang.llvm.org/">clang</a> and
-                <a href="http://ltp.sourceforge.net/coverage/lcov.php">lcov</a>.</p>
-
-        <span class="template-credit">This site is hosted on GitHub pages, and the web template was kindly provided by <a
-                href="https://twitter.com/michigangraham">mattgraham</a>.
-        </span>
-        </div>
-
-        <div style="padding-top: 6em">
-            <h1>LICENSE</h1>
-
-            <p>Apache License, Version 2.0, January 2004, http://www.apache.org/licenses/</p>
-        </div>
-
-
-        <!--[if !IE]>
-        <script>fixScale(document);</script><![endif]-->
-        <script>
-            (function (i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r;
-                i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments)
-                }, i[r].l = 1 * new Date();
-                a = s.createElement(o),
-                        m = s.getElementsByTagName(o)[0];
-                a.async = 1;
-                a.src = g;
-                m.parentNode.insertBefore(a, m)
-            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-            ga('create', 'UA-57638059-1', 'auto');
-            ga('send', 'pageview');
-
-        </script>
-
-    </section>
-
-
-
-
+        <!--order-->
+    </div>
+    <!--bg2-->
 </div>
+<!--wrapper-->
+
+
+<!--BLOCK6-->
+<div class="wrapper border2">
+    <div class="bg">
+        <div id="outscroll"></div>
+        <div id="output" class="strip">
+            <h1>Output</h1>
+
+            <article>
+
+                <img style="display: block; width: 100%" src="images/output.png"/>
+
+                <h2>&nbsp;</h2>
+
+                <img style="display: block; width: 100% margin-top:600px" src="images/report.png"/>
+
+
+
+
+
+
+                <!--social-->
+            </article>
+        </div>
+        <!--about-->
+    </div>
+    <!--bg-->
+</div>
+<!--wrapper-->
+
+
+<!--BLOCK7-->
+<div class="wrapper border2">
+    <div class="bg2">
+        <div id="contactscroll"></div>
+        <div id="contact" class="strip">
+            <h1>Contact us</h1>
+
+            <div id="left-contact">
+                <article>
+                    <h2>Brought to you by AppsQuickly</h2>
+
+                    <p>This project is sponsored and lead by <span class="colour">AppsQuick.ly</span>. We are a small
+                        team of passionate, top-notch developers. For our clients we develop stunning rich-media and
+                        mobile applications. In the community we lead a number of popular open source projects, such as
+                        this one, as well as the popular <a style="color: #b93f04" href="www.typhoonframework.org">Typhoon Framework</a> and
+                        <a style = "color: #b93f04" href="https://github.com/appsquickly/XcodeEditor">XCodeEditor</a>, which is used by folks like Xamarin and Apportable.com as well as
+                        powers numerous Xcode plugins available through Alcatraz.</p>
+                </article>
+            </div>
+            <!--left-contact-->
+
+            <div id="right-contact">
+                <article>
+                    <h2>Attribution</h2>
+
+                    <p>The frankencover.it script just moves a bunch of files into the right place and runs some commands on them,
+                        hopefully
+                        saving you the time of having to read the detailed documentation and run manual steps. The real
+                        heavy-lifting is being done by the awesomeness of <a href="http://clang.llvm.org/">clang</a> and
+                        <a href="http://ltp.sourceforge.net/coverage/lcov.php">lcov</a>.</p>
+
+                    <p>Licensed under the Apache License, Version 2.0, January 2004, http://www.apache.org/licenses/.</p>
+
+                    <p class="connect">
+                        <span class="colour">Visit our website:</span> <a href="http://appsquick.ly">appsquick.ly</a><br/>
+                        <span class="colour">Email us:</span> <a href="mailto:jasper@appsquick.ly">jasper@appsquick.ly</a><br/>
+                        <span class="colour">Call by phone:</span><a href="tel:+63 939 930 2676">+63 939 930 2676</a>
+                    </p>
+
+                    <div class="social">
+                        <a href="https://github.com/appsquickly">Github</a>
+                        <a href="https://twitter.com/appsquickly">Twitter</a>
+                    </div>
+                    <!--social-->
+                </article>
+            </div>
+            <!--right-contact-->
+        </div>
+        <!--contact-->
+    </div>
+    <!--bg-->
+</div>
+<!--wrapper-->
+
+
+<!--BLOCK8-->
+<div class="wrapper border5">
+    <div class="bg2">
+        <footer>
+            <small>&copy; <a href="http://appsquick.ly">appsquick.ly</a> 2015</small>
+            <a class="scroll totop" href="#scrolltop">top of page</a>
+        </footer>
+    </div>
+    <!--bg2-->
+</div>
+<!--wrapper-->
+
+
+<!--SCRIPTS-->
+
+<!--prefix-free by lea verou-->
+<script src="js/prefix-free.js"></script>
+
+<!--jquery-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+
+<!--scrollcontent-->
+<script src="js/scroll.js"></script>
+
+<!--panel over map-->
+<script>
+    $(document).ready(function () {
+        $(".btn-slide").click(function () {
+            $("#panel").slideToggle("slow");
+            $(this).toggleClass("active");
+            return false;
+        });
+    });
+</script>
+
+<!--map-->
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="js/googlemap.js"></script>
+
+<!--youtube player-->
+<script src="js/video.js"></script>
+
 </body>
 </html>
