@@ -1,4 +1,4 @@
-![frankencover.it](http://frankencover.it/images/splash.png)
+<a href="http://frankencover.it">![frankencover.it](http://frankencover.it/images/splash.png)</a>
 
 
 Producing a test coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here we've glued them all together into something that (hopefully) just works. 
