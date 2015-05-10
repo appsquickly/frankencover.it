@@ -606,6 +606,13 @@ pre code {
     float:left;
     width:75%;
     margin:0 12.5%;
+
+	background: url(images/output.png) no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+
 }
 #output article p{
     margin-bottom:30px;
@@ -647,7 +654,7 @@ pre code {
 	background:#b93f04;
 	position:absolute;
 	top:44%;
-	right:20%;
+	right:21%;
 }
 
 #html-label {
@@ -658,7 +665,7 @@ pre code {
 	background:#b93f04;
 	position:absolute;
 	top:40%;
-	right:20%;
+	right:21%;
 }
 
 /* ------------------------------------------------------------------------------------
