@@ -77,6 +77,17 @@ Report file is at `build/reports/coverage/index.html`.
 
 ![Browser](http://frankencover.it/images/report.png)
 
+
+#### Cobertura Format
+
+If you'd like to publish in Cobertura format (commonly supported by build servers) we recommend <a href="https://github.com/eriwen/lcov-to-cobertura-xml">this Python script</a>. 
+
+Place the script somewhere on visible to your build server or whatever needs cobertura format, and then execute as follows: 
+
+```sh
+python ~/lcov_cobertura.py build/reports/coverage/data/coverage.info
+```
+
 #### Install locally
 
 If you don't want to run the hosted script, it can be installed locally with:
