@@ -93,7 +93,7 @@ python ~/lcov_cobertura.py build/reports/coverage/data/coverage.info
 If you don't want to run the hosted script, it can be installed locally with:
 
 ```sh
-curl -SSL https://frankencover.it/with > FrankenCover && chmod +x FrankenCover
+curl -SSL http://frankencover.it/with > FrankenCover && chmod +x ./FrankenCover
 ```
 
 
