@@ -1,5 +1,11 @@
-#<a href="http://frankencover.it">frankencover.it</a>
+#Xcode 7?
 
+Xcode 7 is not currently supported: 
+
+- Requires lcov 1.12 which is not in Brew or MacPorts yet. 
+- Requires update to gather coverage data from a new location. 
+
+#<a href="http://frankencover.it">frankencover.it</a>
 
 Producing a test coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here we've glued them all together into something that (hopefully) just works. 
 
