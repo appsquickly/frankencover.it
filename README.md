@@ -2,8 +2,7 @@
 
 Xcode 7 is not currently supported: 
 
-- Requires lcov 1.12 which is not in Brew or MacPorts yet. 
-- Requires update to gather coverage data from a new location. 
+- Requires lcov 1.12 which is not in Brew or MacPorts yet. However, you could grab the `geninfo` script from master here: https://github.com/linux-test-project/lcov/blob/master/bin/geninfo
 
 #<a href="http://frankencover.it">frankencover.it</a>
 
