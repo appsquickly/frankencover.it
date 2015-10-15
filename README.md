@@ -1,11 +1,5 @@
 #Xcode 7?
 
-Xcode 7 is not currently supported: 
-
-- Requires lcov 1.12 which is not in Brew or MacPorts yet. However, you could grab the `geninfo` script from master here: https://github.com/linux-test-project/lcov/blob/master/bin/geninfo
-
-#<a href="http://frankencover.it">frankencover.it</a>
-
 Producing a test coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here we've glued them all together into something that (hopefully) just works. 
 
 * Generates a report with minimal steps.
