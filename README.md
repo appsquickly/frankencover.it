@@ -7,7 +7,7 @@ Producing a test coverage report for iOS and OSX projects requires a mish-mash o
 * Free for both commercial and open-source projects.
 
  
-#Installing
+# Installing
 
 The script itself can be run remotely, but we'll first need to install dependencies .  .
 
@@ -27,7 +27,7 @@ sudo port install lcov
 
 *NB:* Xcode 7.x requires lcov 1.12, please ensure that you have this version with `lcov --version`
 
-#Usage
+# Usage
 
 Set your main App target to produce test coverage output (debug mode only). 
 
