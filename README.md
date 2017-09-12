@@ -27,7 +27,7 @@ sudo port install lcov
 
 # Important : Fixing 'Coverage Data Not Found' error
 
-*NB:* Current version of Xcode requires lcov 1.13 (`lcov --version`), which is not provided by MacPorts. To install: 
+*NB:* Current version of Xcode requires bleeding edge lcov (`lcov --version`), not provided by MacPorts (need to confirm HomeBrew). To install: 
 
 ```sh
 git clone https://github.com/linux-test-project/lcov.git
