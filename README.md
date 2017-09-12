@@ -25,7 +25,7 @@ sudo port install groovy
 sudo port install lcov
 ```
 
-# Fixing 'Coverage Data Not Found' error
+# Important : Fixing 'Coverage Data Not Found' error
 
 *NB:* Current version of Xcode requires lcov 1.13 (`lcov --version`), which is not provided by MacPorts. To install: 
 
