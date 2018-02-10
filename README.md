@@ -1,3 +1,4 @@
+<h1><a href="http://appsquickly.github.io/frankencover.it/">frankencover.it</a></h1>
 
 Producing a test coverage report for iOS and OSX projects requires a mish-mash of tools and steps. Here we've glued them all together into something that (hopefully) just works. 
 
@@ -39,18 +40,18 @@ sudo make install
 
 Set your main App target to produce test coverage output (debug mode only). 
 
-![Enable Coverage](http://frankencover.it/images/Coverage.png)
+![Enable Coverage](http://appsquickly.github.io/frankencover.it/images/Coverage.png)
 
 Set your main App target to instrument program flow (debug mode only). 
 
-![Enable Instrumentation](http://frankencover.it/images/Instrument.png)
+![Enable Instrumentation](http://appsquickly.github.io/frankencover.it/images/Instrument.png)
 
 ### IDE Use
 
 Run tests in your IDE (AppCode or Xcode) and produce a report with: 
 
 ```sh
-groovy http://frankencover.it/with -source-dir MyProject/Source
+groovy http://appsquickly.github.io/frankencover.it/with -source-dir MyProject/Source
 ```
 
 ### Build server or cmd-line use
@@ -65,7 +66,7 @@ xcodebuild test -workspace MyProject.xcworkspace/ -scheme 'MyProject' -configura
 #(gem install xcpretty)
 
 # Now Produce Test Coverage Report
-groovy http://frankencover.it/with -source-dir MyProject/Source -required-coverage 85
+groovy http://appsquickly.github.io/frankencover.it/with -source-dir MyProject/Source -required-coverage 85
 #Above we set required coverage to 85%. Build fails if coverage falls below this value. 
 ```
 
@@ -75,13 +76,13 @@ groovy http://frankencover.it/with -source-dir MyProject/Source -required-covera
 
 #### cmd-line
 
-![Output](http://frankencover.it/images/output.png)
+![Output](http://appsquickly.github.io/frankencover.it/images/output.png)
 
 #### browser
 
 Report file is at `build/reports/coverage/index.html`.
 
-![Browser](http://frankencover.it/images/report.png)
+![Browser](http://appsquickly.github.io/frankencover.it/images/report.png)
 
 
 #### Cobertura Format
@@ -99,7 +100,7 @@ python ~/lcov_cobertura.py build/reports/coverage/data/coverage.info
 If you don't want to run the hosted script, it can be installed locally with:
 
 ```sh
-curl -SSL http://frankencover.it/with > FrankenCover && chmod +x ./FrankenCover
+curl -SSL http://appsquickly.github.io/frankencover.it/with > FrankenCover && chmod +x ./FrankenCover
 ```
 
 
